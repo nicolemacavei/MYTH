@@ -7,12 +7,5 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="whitesmoke">#F5F5F5</color>
-    <color name="gainsboro">#DCDCDC</color>
-    <color name="slategray">#778899</color>
-    <color name="darkslategray">#2F4F4F</color>
-    <color name="teal">#008080</color>
-    <color name="midnightblue">#191970</color>
-    <color name="royalblue">#4169E1</color>
-
+    <color name="midnightblue">#003F5D</color>
 </resources>

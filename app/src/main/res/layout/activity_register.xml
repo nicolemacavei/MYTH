@@ -8,7 +8,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:background="@drawable/blue_login_background"
-    tools:context=".Register">
+    tools:context=".RegisterActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -43,7 +43,6 @@
                 android:layout_marginEnd="20dp"
                 android:hint="first name"
                 android:inputType="text"
-                android:maxLines="1"
                 android:paddingStart="20dp"
                 android:paddingEnd="0dp"
                 android:textColor="@color/midnightblue"/>
@@ -56,33 +55,18 @@
                 android:layout_marginEnd="20dp"
                 android:hint="last name"
                 android:inputType="text"
-                android:maxLines="1"
                 android:paddingStart="20dp"
                 android:paddingEnd="0dp"
                 android:textColor="@color/midnightblue"/>
 
             <EditText
-                android:id="@+id/emailEditText"
+                android:id="@+id/emailRegisterEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:hint="email"
                 android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:paddingStart="20dp"
-                android:paddingEnd="0dp"
-                android:textColor="@color/midnightblue"/>
-
-            <EditText
-                android:id="@+id/phoneEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
-                android:hint="mobile"
-                android:inputType="phone"
-                android:maxLines="1"
                 android:paddingStart="20dp"
                 android:paddingEnd="0dp"
                 android:textColor="@color/midnightblue"/>
@@ -95,7 +79,6 @@
                 android:layout_marginEnd="20dp"
                 android:hint="password"
                 android:inputType="textPassword"
-                android:maxlines="1"
                 android:paddingStart="20dp"
                 android:paddingEnd="0dp"
                 android:textColor="@color/midnightblue"/>
@@ -108,7 +91,6 @@
                 android:layout_marginEnd="20dp"
                 android:hint="re-enter password"
                 android:inputType="textPassword"
-                android:maxLines="1"
                 android:paddingStart="20dp"
                 android:paddingEnd="0dp"
                 android:textColor="@color/midnightblue"/>

@@ -7,7 +7,7 @@
     android:background="@drawable/blue_login_background"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".Login">
+    tools:context=".LoginActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,17 +34,15 @@
             android:padding="24dp">
 
             <EditText
-                android:id="@+id/phoneEditText"
+                android:id="@+id/emailLoginEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                android:hint="mobile"
-                android:inputType="phone"
-                android:maxLines="1"
+                android:hint="email"
+                android:inputType="textEmailAddress"
                 android:paddingStart="20dp"
-                android:paddingEnd="0dp"
-                android:textColor="@color/midnightblue" />
+                android:paddingEnd="0dp"/>
 
             <EditText
                 android:id="@+id/passwordEditText"
@@ -54,10 +52,8 @@
                 android:layout_marginEnd="20dp"
                 android:hint="password"
                 android:inputType="textPassword"
-                android:maxlines="1"
                 android:paddingStart="20dp"
-                android:paddingEnd="0dp"
-                android:textColor="@color/midnightblue" />
+                android:paddingEnd="0dp"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/loginBtn"
@@ -67,7 +63,7 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="20dp"
                 android:text="Login"
-                android:textColor="@color/midnightblue" />
+                android:textColor="@color/midnightblue"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"

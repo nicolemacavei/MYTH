@@ -1,6 +1,8 @@
 package com.example.myth;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -21,10 +23,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private EditText loginEmail, loginPassword;
-    private TextView registerButton;
-    private TextView loginButton;
+    private TextView registerButton, resetPassword, loginButton;
+
+    public static final String SHARED_PREFS = "sharedPrefs";
     //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +39,9 @@ public class LoginActivity extends AppCompatActivity {
         loginPassword = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginBtn);
         registerButton = findViewById(R.id.registerPageBtn);
+        resetPassword = findViewById(R.id.resetPasswordPageBtn);
+
+        userIsLoggedIn();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +54,11 @@ public class LoginActivity extends AppCompatActivity {
                         auth.signInWithEmailAndPassword(email, pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
+                                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("name", "true");
+                                editor.apply();
+
                                 Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
@@ -65,39 +77,6 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     loginEmail.setError("Please enter a valid email");
                 }
-//                final String phoneTxt = phone.getText().toString();
-//                final String passwordTxt = password.getText().toString();
-//
-//                if(phoneTxt.isEmpty() || passwordTxt.isEmpty()){
-//                    Toast.makeText(LoginActivity.this, "Please enter your mobile or password!", Toast.LENGTH_SHORT).show();
-//                }
-//                else {
-//                    databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-//                            // check if username exists in database
-//                            if (snapshot.hasChild(phoneTxt)) {
-//                                final String getPassword = snapshot.child(phoneTxt).child("password").getValue(String.class);
-//
-//                                if (getPassword.equals(passwordTxt)) {
-//                                    Toast.makeText(LoginActivity.this, "Login Succesful", Toast.LENGTH_SHORT).show();
-//
-//                                    //open Application
-//                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//                                    finish();
-//                                } else {
-//                                    Toast.makeText(LoginActivity.this, "Try Again", Toast.LENGTH_SHORT).show();
-//                                }
-//                            } else {
-//                                Toast.makeText(LoginActivity.this, "Wrong Password", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//
-//                        }
-//                    });
             }
         });
 
@@ -107,5 +86,23 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
+
+        resetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, ResetPassword.class));
+            }
+        });
+    }
+
+    private void userIsLoggedIn() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String check = sharedPreferences.getString("name", "");
+
+        if(check.equals("true")){
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        }
     }
 }

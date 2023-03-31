@@ -49,14 +49,20 @@ public class RegisterActivity extends AppCompatActivity {
                 String lastName = signupLastName.getText().toString().trim();
                 String firstName = signupFirstName.getText().toString().trim();
 
-                if(email.isEmpty() || pass.isEmpty() || passTwo.isEmpty() || lastName.isEmpty() || firstName.isEmpty()){
-                    signupEmail.setError("Fill in all fields");
+                if(email.isEmpty())
+                {
+                    signupEmail.setError("Email is mandatory");
+                }else if(pass.isEmpty()) {
+                    signupPassword.setError("Select a password");
+                } else if(lastName.isEmpty() || firstName.isEmpty()){
+                    signupFirstName.setError("Mandatory");
+                    signupLastName.setError("Mandatory");
                 }else {
                     if(!pass.equals(passTwo)){
                         Toast.makeText(RegisterActivity.this, "Passwords are not matching", Toast.LENGTH_SHORT).show();
                     } else if(!(pass.length() >= 8)){
                         Toast.makeText(RegisterActivity.this, "Password needs at least 8 characters", Toast.LENGTH_SHORT).show();
-                    } else if (!pass.matches(".*[A-Z].*") && !pass.matches(".*[\\d].*") && !pass.matches(".*[a-z].*")) {
+                    } else if (!pass.matches(".*[\\d].*") && !pass.matches(".*[a-z].*")) {
                         Toast.makeText(RegisterActivity.this, "Password must contain at least one capital and one small letter and one digit", Toast.LENGTH_SHORT).show();
                     } else {
                         auth.createUserWithEmailAndPassword(email, pass)

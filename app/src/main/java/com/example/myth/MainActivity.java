@@ -5,20 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
+    FirebaseAuth auth;
+    FirebaseUser user;
     BottomNavigationView navigationView;
-
     private TextView logoutBtn;
-    public static final String SHARED_PREFS = "sharedPrefs";
+    //public static final String SHARED_PREFS = "sharedPrefs";
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.bottom_settings:
-                        fragment = new SettingsFragment();
+                        fragment = new UserProfileFragment();
                         break;
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();

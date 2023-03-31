@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import org.jetbrains.annotations.NotNull;
 
 public class LoginActivity extends AppCompatActivity {
@@ -25,8 +27,20 @@ public class LoginActivity extends AppCompatActivity {
     private EditText loginEmail, loginPassword;
     private TextView registerButton, resetPassword, loginButton;
 
-    public static final String SHARED_PREFS = "sharedPrefs";
+    //public static final String SHARED_PREFS = "sharedPrefs";
     //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //check if user is logged in
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if(currentUser != null){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -41,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         registerButton = findViewById(R.id.registerPageBtn);
         resetPassword = findViewById(R.id.resetPasswordPageBtn);
 
-        userIsLoggedIn();
+        //userIsLoggedIn();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,10 +68,10 @@ public class LoginActivity extends AppCompatActivity {
                         auth.signInWithEmailAndPassword(email, pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-                                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("name", "true");
-                                editor.apply();
+//                                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+//                                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                                editor.putString("name", "true");
+//                                editor.apply();
 
                                 Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -95,14 +109,14 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void userIsLoggedIn() {
-
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        String check = sharedPreferences.getString("name", "");
-
-        if(check.equals("true")){
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
-        }
-    }
+//    private void userIsLoggedIn() {
+//
+//        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+//        String check = sharedPreferences.getString("name", "");
+//
+//        if(check.equals("true")){
+//            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//            finish();
+//        }
+//    }
 }

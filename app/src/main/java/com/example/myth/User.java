@@ -25,4 +25,15 @@ public class User {
         this.lastName = lastName;
         this.firstName = firstName;
     }
+
+    public boolean verifyPassword(String password){
+        if(password.length() < 8 || (!password.matches(".*[\\d].*") && !password.matches(".*[a-z].*"))){
+            return false;
+        }
+        return true;
+    }
+
+    public String getFullName(){
+        return firstName + " " + lastName;
+    }
 }

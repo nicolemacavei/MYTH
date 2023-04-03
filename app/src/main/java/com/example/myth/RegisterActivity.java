@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -48,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String passTwo = signupPasswordTwo.getText().toString().trim();
                 String lastName = signupLastName.getText().toString().trim();
                 String firstName = signupFirstName.getText().toString().trim();
+                String name = firstName + " " + lastName;
 
                 if(email.isEmpty())
                 {
@@ -62,8 +65,8 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "Passwords are not matching", Toast.LENGTH_SHORT).show();
                     } else if(!(pass.length() >= 8)){
                         Toast.makeText(RegisterActivity.this, "Password needs at least 8 characters", Toast.LENGTH_SHORT).show();
-                    } else if (!pass.matches(".*[\\d].*") && !pass.matches(".*[a-z].*")) {
-                        Toast.makeText(RegisterActivity.this, "Password must contain at least one capital and one small letter and one digit", Toast.LENGTH_SHORT).show();
+                    } else if (doesNotContainCharacters(pass)) {
+                        Toast.makeText(RegisterActivity.this, "Password must contain at least one small letter and one digit", Toast.LENGTH_SHORT).show();
                     } else {
                         auth.createUserWithEmailAndPassword(email, pass)
                                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -76,9 +79,9 @@ public class RegisterActivity extends AppCompatActivity {
                                             lastName,
                                             firstName
                                     );
-                                    firebaseFirestore.collection("User")
-                                                    .document(FirebaseAuth.getInstance().getUid())
-                                                    .set(registeredUser);
+                                    FirebaseUser user = auth.getCurrentUser();
+                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+                                    user.updateProfile(profileUpdates);
                                     Toast.makeText(RegisterActivity.this, "Register Successful", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                                 } else {
@@ -97,5 +100,11 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             }
         });
+    }
+
+    private boolean doesNotContainCharacters(String pass) {
+        if(!pass.matches(".*[\\d].*") && !pass.matches(".*[a-z].*"))
+            return true;
+        return false;
     }
 }

@@ -13,12 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
-
-    FirebaseAuth auth;
-    FirebaseUser user;
     BottomNavigationView navigationView;
-    private TextView logoutBtn;
-    //public static final String SHARED_PREFS = "sharedPrefs";
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -29,21 +24,6 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.bottom_navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.body_container, new CalendarFragment()).commit();
         navigationView.setSelectedItemId(R.id.bottom_calendar);
-
-//        logoutBtn = findViewById(R.id.logoutBtn);
-//
-//        logoutBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-//                SharedPreferences.Editor editor = sharedPreferences.edit();
-//                editor.putString("name", "");
-//                editor.apply();
-//
-//                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-//                finish();
-//            }
-//        });
         navigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

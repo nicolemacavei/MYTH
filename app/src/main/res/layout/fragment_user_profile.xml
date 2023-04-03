@@ -8,10 +8,13 @@
     android:background="@drawable/blue_login_background"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/userProfileLayout"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="20dp"
+        android:alpha="0.6">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,11 +37,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/userNameProfile"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="20dp"
                 android:fontFamily="sans-serif-light"
                 android:textSize="30sp"
                 android:textColor="@color/iconColors"
                 android:text="@string/full_name"/>
+
         </LinearLayout>
 
             <LinearLayout
@@ -46,14 +50,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="190dp"
+                android:layout_marginTop="150dp"
                 android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
-                android:weightSum="100">
+                android:layout_marginEnd="30dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:id="@+id/emailUserProfile"
                     android:textColor="@color/iconColors"
                     android:fontFamily="sans-serif-light"
@@ -61,8 +64,8 @@
                     android:text="@string/emailuserprofile"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:id="@+id/scanQRUserProfile"
                     android:textColor="@color/iconColors"
                     android:fontFamily="sans-serif-light"
@@ -70,25 +73,33 @@
                     android:text="@string/scan_qr_code"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:id="@+id/closeFriendsUserProfile"
                     android:textColor="@color/iconColors"
                     android:fontFamily="sans-serif-light"
                     android:textSize="20sp"
                     android:text="@string/close_friends_list"/>
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/changePasswordBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="@string/change_password"
+                    android:textColor="@color/midnightblue"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/logoutBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="@string/logoutButton"
+                    android:textColor="@color/midnightblue"/>
+
             </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/logoutBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:layout_marginTop="300dp"
-            android:text="@string/logoutButton"
-            android:textColor="@color/midnightblue"/>
-    </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
 
     <!--    <TextView-->

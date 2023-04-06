@@ -21,4 +21,6 @@
     <string name="add_a_new_event_top_text">Add a new Event</string>
     <string name="name_of_the_event">Name of the Event</string>
     <string name="add_event_btn">Add Event</string>
+    <string name="details_new_event">Details</string>
+    <string name="duration_event">Duration</string>
 </resources>

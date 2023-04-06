@@ -4,9 +4,9 @@
 
     <stroke
         android:width="2dp"
-        android:color="@color/purple_200"/>
+        android:color="@color/bottom_navigator"/>
 
-    <solid android:color="@color/purple_200"/>
+    <solid android:color="@color/bottom_navigator"/>
 
     <corners android:radius="30dp"/>
 </shape>

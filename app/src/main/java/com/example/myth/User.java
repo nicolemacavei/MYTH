@@ -32,8 +32,4 @@ public class User {
         }
         return true;
     }
-
-    public String getFullName(){
-        return firstName + " " + lastName;
-    }
 }

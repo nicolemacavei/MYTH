@@ -37,14 +37,6 @@ public class ExampleUnitTest {
         }
     }
 
-    //In the third test case, we verify that the getFullName() method returns the concatenated
-    // first and last name of the user.
-    @Test
-    public void testUserFullName() {
-        User user = new User("johndoe@example.com", "John1", "Doe", "John");
-        assertEquals("John Doe", user.getFullName());
-    }
-
     //In this case we test the password function to send the message.
     @Test
     public void testUserInvalidPassword(){

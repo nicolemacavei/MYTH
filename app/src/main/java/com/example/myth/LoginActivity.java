@@ -27,9 +27,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText loginEmail, loginPassword;
     private TextView registerButton, resetPassword, loginButton;
 
-    //public static final String SHARED_PREFS = "sharedPrefs";
-    //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -68,10 +65,6 @@ public class LoginActivity extends AppCompatActivity {
                         auth.signInWithEmailAndPassword(email, pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-//                                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-//                                SharedPreferences.Editor editor = sharedPreferences.edit();
-//                                editor.putString("name", "true");
-//                                editor.apply();
 
                                 Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -108,15 +101,4 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-//    private void userIsLoggedIn() {
-//
-//        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-//        String check = sharedPreferences.getString("name", "");
-//
-//        if(check.equals("true")){
-//            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//            finish();
-//        }
-//    }
 }

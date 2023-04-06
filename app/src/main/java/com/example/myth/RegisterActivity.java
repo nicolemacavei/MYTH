@@ -27,6 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button signupButton;
     private TextView loginRedirectText;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +80,8 @@ public class RegisterActivity extends AppCompatActivity {
                                             lastName,
                                             firstName
                                     );
+                                    firebaseFirestore.collection("User")
+                                            .document(FirebaseAuth.getInstance().getUid()).set(registeredUser);
                                     FirebaseUser user = auth.getCurrentUser();
                                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
                                     user.updateProfile(profileUpdates);

@@ -2,6 +2,7 @@
 <resources>
     <color name="purple_200">#B2C7C8</color>
     <color name="purple_500">#779199</color>
+    <color name="bottom_navigator">#88779199</color>
     <color name="purple_700">#B2C7C8</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>

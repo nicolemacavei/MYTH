@@ -58,24 +58,52 @@
                 android:paddingStart="20dp"
                 android:paddingEnd="0dp"/>
 
-            <TextView
-                android:id="@+id/eventTimeText"
+<!--            <TextView-->
+<!--                android:id="@+id/eventTimeText"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:layout_marginEnd="20dp"-->
+<!--                android:hint="Time"-->
+<!--                android:textSize="20sp"-->
+<!--                android:paddingStart="20dp"-->
+<!--                android:paddingEnd="0dp"/>-->
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:hint="Time"
-                android:textSize="20sp"
+                android:orientation="horizontal"
                 android:paddingStart="20dp"
-                android:paddingEnd="0dp"/>
+                android:paddingEnd="0dp">
+
+                <NumberPicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/eventTimeHour"
+                    android:layout_marginEnd="20dp"/>
+                <NumberPicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/eventTimeMin"/>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/durationEventText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:hint="Duration"
+                android:textSize="20sp"
+                android:paddingStart="20dp"
+                android:paddingEnd="0dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:hint="Remind me before"
                 android:textSize="20sp"
                 android:paddingStart="20dp"
                 android:paddingEnd="0dp"/>

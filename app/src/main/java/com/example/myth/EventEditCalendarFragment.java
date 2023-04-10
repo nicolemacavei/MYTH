@@ -9,21 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 public class EventEditCalendarFragment extends Fragment {
 
     private EditText eventName, eventDetails;
-    private TextView eventDate, eventTime, eventDuration;
+    private TextView eventDate, eventDuration;
     private LocalTime time;
     private Button addEventBtn;
     private FirebaseFirestore firebaseFirestore;
+    private NumberPicker eventHour, eventMinute;
 
     public EventEditCalendarFragment() {
         // Required empty public constructor
@@ -34,9 +36,13 @@ public class EventEditCalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_event_edit_calendar, container, false);
         initWidgets(rootView);
-        time = LocalTime.now();
+        //time = LocalTime.now();
         eventDate.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));
-        eventTime.setText("Time: " + CalendarUtils.formattedTime(time));
+        eventHour.setMinValue(0);
+        eventHour.setMaxValue(23);
+        eventMinute.setMinValue(0);
+        eventMinute.setMaxValue(59);
+        //eventTime.setText("Time: " + CalendarUtils.formattedTime(time));
 
         addEventBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,13 +50,15 @@ public class EventEditCalendarFragment extends Fragment {
                 String eventNameString = eventName.getText().toString();
                 String eventDetailsString = eventDetails.getText().toString();
                 String  eventDurationNo = eventDuration.getText().toString();
+                int hour = eventHour.getValue();
+                int minute = eventMinute.getValue();
 
                 if(eventNameString.isEmpty()){
                     eventName.setError("Name is mandatory");
                 }
                 else {
                     Fragment calendarFragment = null;
-                    addEvent(eventNameString, eventDetailsString, eventDurationNo);
+                    addEvent(eventNameString, eventDetailsString, eventDurationNo, hour, minute);
                     calendarFragment = new CalendarFragment();
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.body_container, calendarFragment).commit();
                 }
@@ -62,20 +70,22 @@ public class EventEditCalendarFragment extends Fragment {
     private void initWidgets(View rootView) {
         eventName = rootView.findViewById(R.id.nameEventEditText);
         eventDate = rootView.findViewById(R.id.eventDateText);
-        eventTime = rootView.findViewById(R.id.eventTimeText);
+        eventHour = rootView.findViewById(R.id.eventTimeHour);
+        eventMinute = rootView.findViewById(R.id.eventTimeMin);
         addEventBtn = rootView.findViewById(R.id.addEventBtn);
         eventDetails = rootView.findViewById(R.id.detailsEventEditText);
         eventDuration = rootView.findViewById(R.id.durationEventText);
         firebaseFirestore = FirebaseFirestore.getInstance();
     }
 
-    private void addEvent(String eventNameString, String eventDetailsString, String eventDurationNo){
+    private void addEvent(String eventNameString, String eventDetailsString, String eventDurationNo, int hour, int minute){
 
+        String uniqueID = UUID.randomUUID().toString();
         String eventFormattedDate = CalendarUtils.formattedDate(CalendarUtils.selectedDate);
         Event newEvent = new Event(
-                eventNameString, eventDetailsString, eventFormattedDate, time, eventDurationNo);
+                eventNameString, eventDetailsString, eventFormattedDate, eventDurationNo, hour, minute);
         firebaseFirestore.collection("User").document(FirebaseAuth.getInstance().getUid())
-                .collection("Date").document(CalendarUtils.selectedDate.toString()).set(newEvent);
+                .collection("Date").document(CalendarUtils.selectedDate.toString()).collection("Event").document(uniqueID).set(newEvent);
 
     }
 }

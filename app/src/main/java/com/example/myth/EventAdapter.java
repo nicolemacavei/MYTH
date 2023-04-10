@@ -9,10 +9,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.time.LocalTime;
 import java.util.List;
 
-public class EventAdapter extends ArrayAdapter<Event> {
+public class EventAdapter extends ArrayAdapter<Event>{
+
     public EventAdapter(@NonNull Context context, List<Event> events) {
         super(context, 0, events);
     }
@@ -26,8 +29,13 @@ public class EventAdapter extends ArrayAdapter<Event> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.event_cell, parent, false);
 
         TextView eventCellTV = convertView.findViewById(R.id.eventCellText);
-        String eventTitle = event.getName() + " " + CalendarUtils.formattedTime(event.getTime());
+        int hour = event.getHour();
+        int minute = event.getMinute();
+//        CalendarUtils.formattedTime(LocalTime.now())
+        //hour + ":" + minute + " " +
+        String eventTitle =  hour + ":" + minute + " " + event.getName();
         eventCellTV.setText(eventTitle);
         return convertView;
     }
+
 }

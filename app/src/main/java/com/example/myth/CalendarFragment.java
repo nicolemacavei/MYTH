@@ -15,9 +15,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class CalendarFragment extends Fragment implements CalendarAdapter.OnItemListener{
@@ -25,7 +31,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private Button previousMonthBtn, nextMonthBtn, addEventBtn;
-    private ListView eventListView;
+    private static ListView eventReciclerView;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -71,7 +77,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         previousMonthBtn = (Button) rootView.findViewById(R.id.previousMonthBtn);
         nextMonthBtn = (Button) rootView.findViewById(R.id.nextMonthBtn);
         addEventBtn = (Button) rootView.findViewById(R.id.addItemCalendarBtn);
-        eventListView = rootView.findViewById(R.id.eventListView);
+        eventReciclerView = rootView.findViewById(R.id.eventListView);
     }
 
     private void setMonthView() {
@@ -92,9 +98,31 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     }
 
     private void setEventAdapter() {
-        ArrayList<Event> dailyEvents = Event.eventsForDate(CalendarUtils.selectedDate);
-        EventAdapter eventAdapter = new EventAdapter(getActivity().getApplicationContext(), dailyEvents);
-        eventListView.setAdapter(eventAdapter);
+        String dateFormatted = CalendarUtils.formattedDate(CalendarUtils.selectedDate);
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String userId = auth.getCurrentUser().getUid();
+        //LocalTime time = LocalTime.now();
+
+        Task<QuerySnapshot> eventsList = firebaseFirestore.collection("User").document(userId)
+                .collection("Date").document(CalendarUtils.selectedDate.toString()).collection("Event").get();
+
+        eventsList.addOnSuccessListener(task -> {
+
+            ArrayList<Event> events = new ArrayList<>();
+            for(QueryDocumentSnapshot queryDocSn : task){
+
+                String name = queryDocSn.getString("name");
+                String details = queryDocSn.getString("details");
+                int hour = queryDocSn.getLong("hour").intValue();
+                int minute = queryDocSn.getLong("minute").intValue();
+
+                Event event = new Event(name, details, dateFormatted, name, hour, minute);
+                events.add(event);
+            }
+            EventAdapter eventAdapter = new EventAdapter(getActivity(), events);
+            eventReciclerView.setAdapter(eventAdapter);
+        });
     }
 
     @Override

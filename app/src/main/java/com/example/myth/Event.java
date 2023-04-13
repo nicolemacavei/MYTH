@@ -6,75 +6,28 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.time.LocalTime;
 
 public class Event {
-
-//    private static FirebaseAuth auth;
-//    private static FirebaseFirestore firebaseFirestore;
-//    private static String userId;
     private String name, details;
     private String date;
-    //private static LocalTime time;
-    private String duration;
+    private String eventId;
+    private int hour,minute, duration, remind;
 
-    private int hour,minute;
-
-//    public static ArrayList<Event> eventsForDate(LocalDate date){
-//
-//        String dateFormatted = CalendarUtils.formattedDate(date);
-//        firebaseFirestore = FirebaseFirestore.getInstance();
-//        auth = FirebaseAuth.getInstance();
-//        userId = auth.getCurrentUser().getUid();
-//        ArrayList<Event> events = new ArrayList<>();
-//
-//        firebaseFirestore.collection("User").document(userId)
-//                .collection("Date").document(date.toString()).collection("Event").get().addOnCompleteListener(task -> {
-//                    if(task.isSuccessful() && task.getResult() != null){
-//
-//                        for(QueryDocumentSnapshot queryDocSn : task.getResult()){
-//
-//                            String name = queryDocSn.getString("name");
-//                            String details = queryDocSn.getString("details");
-//
-//                            Event event = new Event(name, details, dateFormatted, name);
-//
-//                            System.out.println("COLLECTION EVENT REACHED: " + event.getName());
-//                            events.add(event);
-//                        }
-//                    }
-//                });
-//
-//        System.out.println("LIST OF EVENTS: " + events);
-//        return events;
-//    }
-
-//    private static void retrieveEventsFromFirestore(String dateFormatted, ArrayList<Event> events) {
-//
-//        firebaseFirestore.collection("User").document(userId)
-//                .collection("Date").document(dateFormatted).collection("Event").get().addOnCompleteListener(task -> {
-//                    if(task.isSuccessful() && task.getResult() != null){
-//
-//                        for(QueryDocumentSnapshot queryDocSn : task.getResult()){
-//
-//                            String name = queryDocSn.getString("name");
-//
-//                            System.out.println();
-//                            System.out.println("COLLECTION EVENT REACHED: " + name);
-//                            System.out.println();
-//
-//                            Event event = new Event(name, name, dateFormatted, time, name);
-//                            events.add(event);
-//                        }
-//                    }
-//                });
-//
-//    }
-
-    public Event(String name, String details, String date, String duration, int hour, int minute) {
+    public Event(String eventId, String name, String details, String date, int duration, int remind, int hour, int minute) {
+        this.eventId = eventId;
         this.name = name;
         this.details = details;
         this.date = date;
         this.hour = hour;
         this.minute = minute;
+        this.remind = remind;
         this.duration = duration;
+    }
+
+    public int getRemind() {
+        return remind;
+    }
+
+    public void setRemind(int remind) {
+        this.remind = remind;
     }
 
     public String getName() {
@@ -93,6 +46,10 @@ public class Event {
         return minute;
     }
 
+    public String getEventId() {
+        return eventId;
+    }
+
     public String getDetails() {
         return details;
     }
@@ -108,20 +65,12 @@ public class Event {
     public void setDate(String date) {
         this.date = date;
     }
-//
-//    public LocalTime getTime() {
-//        return time;
-//    }
-//
-//    public void setTime(LocalTime time) {
-//        this.time = time;
-//    }
 
-    public String getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 }

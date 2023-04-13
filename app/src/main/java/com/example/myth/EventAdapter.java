@@ -32,8 +32,7 @@ public class EventAdapter extends ArrayAdapter<Event>{
         int hour = event.getHour();
         int minute = event.getMinute();
 //        CalendarUtils.formattedTime(LocalTime.now())
-        //hour + ":" + minute + " " +
-        String eventTitle =  hour + ":" + minute + " " + event.getName();
+        String eventTitle =  hour + ":" + minute + " - " + event.getName();
         eventCellTV.setText(eventTitle);
         return convertView;
     }

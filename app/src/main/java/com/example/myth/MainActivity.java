@@ -5,15 +5,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.TextView;
+
+import com.example.myth.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.android.material.timepicker.MaterialTimePicker;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView navigationView;
+    private ActivityMainBinding binding;
+    private Calendar calendar;
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -38,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.bottom_meeting:
-                        fragment = new CheckTimeFragment();
+                        fragment = new UsersList();
                         break;
 
                     case R.id.bottom_settings:
@@ -51,4 +64,31 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+//    private void setAlarm() {
+//        calendar = Calendar.getInstance();
+//        calendar.set(Calendar.HOUR_OF_DAY, 8);
+//        calendar.set(Calendar.MINUTE, 36);
+//        calendar.set(Calendar.SECOND, 0);
+//        calendar.set(Calendar.MILLISECOND, 0);
+//
+//        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//        Intent intent = new Intent(MainActivity.this, ReminderReceiver.class);
+//        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0 , intent, 0);
+//
+//        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+//    }
+//
+//    private void createNotificationChannel(){
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+//            CharSequence name = "eventReminderChannel";
+//            String desc = "Channel for Event Reminders";
+//            int imp = NotificationManager.IMPORTANCE_HIGH;
+//            NotificationChannel channel = new NotificationChannel("eventReminderId", name, imp);
+//            channel.setDescription(desc);
+//
+//            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+//            notificationManager.createNotificationChannel(channel);
+//        }
+//    }
 }

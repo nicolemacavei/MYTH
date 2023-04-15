@@ -1,7 +1,7 @@
 package com.example.myth;
 
-import static com.example.myth.CalendarUtils.daysInMonthArray;
-import static com.example.myth.CalendarUtils.monthYearFromDate;
+import static com.example.myth.utilities.CalendarUtils.daysInMonthArray;
+import static com.example.myth.utilities.CalendarUtils.monthYearFromDate;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myth.utilities.CalendarUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,10 +57,10 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         setMonthView();
 
         addEventBtn.setOnClickListener(new View.OnClickListener() {
-            Fragment newEventFragment = null;
+            //Fragment newEventFragment = null;
             @Override
             public void onClick(View v) {
-                newEventFragment = new NewEventFragmentSOONTODELETE();
+                //newEventFragment = new NewEventFragmentSOONTODELETE();
                 //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.body_container, newEventFragment).commit();
 
                 Intent intent = new Intent(getActivity(), NewEventActivity.class);

@@ -1,4 +1,4 @@
-package com.example.myth;
+package com.example.myth.utilities;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

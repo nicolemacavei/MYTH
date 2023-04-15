@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".NewEventFragmentSOONTODELETE"
+    tools:context=".NewEventActivity"
     android:background="@drawable/blue_login_background">
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,6 +47,7 @@
                 android:hint="@string/name_of_the_event"
                 android:inputType="text"
                 android:paddingStart="20dp"
+                android:textColor="@color/midnightblue"
                 android:paddingEnd="0dp"/>
 
             <TextView
@@ -58,6 +59,7 @@
                 android:hint="Date"
                 android:textSize="20sp"
                 android:paddingStart="20dp"
+                android:textColor="@color/midnightblue"
                 android:paddingEnd="0dp"/>
 
             <LinearLayout

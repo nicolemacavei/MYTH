@@ -19,7 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_marginTop="30dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
@@ -31,7 +31,7 @@
                 android:layout_height="90dp"
                 android:contentDescription="@string/userprofile"
                 android:scaleType="fitXY"
-                android:src="@drawable/default_profile_picture"/>
+                android:src="@drawable/default_profile_picture" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -43,16 +43,16 @@
                 android:textColor="@color/iconColors"
                 android:text="@string/full_name"/>
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
-            <LinearLayout
-                android:id="@+id/userInformationLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="150dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/userInformationLayout"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+<!--                android:layout_marginTop="150dp"-->
+<!--                android:layout_marginStart="30dp"-->
+<!--                android:layout_marginEnd="30dp">-->
 
                 <TextView
                     android:layout_width="match_parent"

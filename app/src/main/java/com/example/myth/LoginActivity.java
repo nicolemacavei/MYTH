@@ -2,34 +2,45 @@ package com.example.myth;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.myth.utilities.Constants;
+import com.example.myth.utilities.PreferenceManager;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import org.jetbrains.annotations.NotNull;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
+    private FirebaseFirestore firebaseFirestore;
     private EditText loginEmail, loginPassword;
     private TextView registerButton, resetPassword, loginButton;
+    private PreferenceManager preferenceManager;
+    private String image,name,email;
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        preferenceManager = new PreferenceManager(getApplicationContext());
         //check if user is logged in
         FirebaseUser currentUser = auth.getCurrentUser();
         if(currentUser != null){
@@ -37,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+        //ToDo: implement SharedPrefererences
     }
 
     @SuppressLint("WrongViewCast")
@@ -52,8 +64,6 @@ public class LoginActivity extends AppCompatActivity {
         registerButton = findViewById(R.id.registerPageBtn);
         resetPassword = findViewById(R.id.resetPasswordPageBtn);
 
-        //userIsLoggedIn();
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                         auth.signInWithEmailAndPassword(email, pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-
+                                setSharedPrefs(auth.getCurrentUser().getUid());
                                 Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
@@ -100,5 +110,26 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, ResetPassword.class));
             }
         });
+    }
+
+    private void setSharedPrefs(String userId) {
+        preferenceManager.putString(Constants.KEY_USER_ID, userId);
+        preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
+        preferenceManager.putString(Constants.KEY_NAME, auth.getCurrentUser().getDisplayName());
+        preferenceManager.putString(Constants.KEY_EMAIL, auth.getCurrentUser().getEmail());
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        DocumentReference userDetails = firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS).document(userId);
+        System.out.println(" TEST USER DETAILS: " + userDetails);
+        userDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                image = documentSnapshot.getString(Constants.KEY_IMAGE);
+                System.out.println("IMAGE TEST " + image);
+                preferenceManager.putString(Constants.KEY_IMAGE, image);
+            }
+        });
+
     }
 }

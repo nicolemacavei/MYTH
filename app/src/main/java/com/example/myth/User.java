@@ -1,7 +1,7 @@
 package com.example.myth;
 
 public class User {
-    public String email, password, lastName, firstName;
+    public String email, password, lastName, firstName, image;
 
     public String getEmail() {
         return email;
@@ -19,11 +19,16 @@ public class User {
         return firstName;
     }
 
-    public User(String email, String password, String lastName, String firstName) {
+    public String getImage() {
+        return image;
+    }
+
+    public User(String email, String password, String lastName, String firstName, String image) {
         this.email = email;
         this.password = password;
         this.lastName = lastName;
         this.firstName = firstName;
+        this.image = image;
     }
 
     public boolean verifyPassword(String password){

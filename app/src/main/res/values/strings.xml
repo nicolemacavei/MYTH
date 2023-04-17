@@ -23,4 +23,5 @@
     <string name="add_event_btn">Add Event</string>
     <string name="details_new_event">Details</string>
     <string name="duration_event">Duration</string>
+    <string name="select_user_usersList">Select User</string>
 </resources>

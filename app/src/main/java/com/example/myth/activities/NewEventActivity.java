@@ -1,4 +1,4 @@
-package com.example.myth;
+package com.example.myth.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +16,9 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.example.myth.Event;
+import com.example.myth.R;
+import com.example.myth.ReminderReceiver;
 import com.example.myth.utilities.CalendarUtils;
 import com.google.android.material.slider.Slider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,7 +44,7 @@ public class NewEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_event_edit_calendar);
+        setContentView(R.layout.activity_new_event);
 
         initWidgets();
         eventDate.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));

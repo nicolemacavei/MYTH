@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="@drawable/blue_login_background"
-    tools:context=".RegisterActivity">
+    android:background="@color/purple_500"
+    tools:context=".activities.RegisterActivity">
 
     <TextView
         android:layout_width="wrap_content"

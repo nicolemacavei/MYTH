@@ -6,12 +6,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -22,32 +19,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.myth.activities.LoginActivity;
+import com.example.myth.activities.MainActivity;
 import com.example.myth.utilities.Constants;
 import com.example.myth.utilities.PreferenceManager;
+import com.google.android.gms.common.util.IOUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.concurrent.Executor;
-import java.util.zip.Inflater;
+import java.util.HashMap;
 
 public class UserProfileFragment extends Fragment {
 
@@ -58,7 +47,7 @@ public class UserProfileFragment extends Fragment {
     private FirebaseUser user;
     private FirebaseFirestore firebaseFirestore;
     private ImageView profileImage;
-    private String encodedImage, image;
+    private String encodedImage;
     private PreferenceManager preferenceManager;
 
     @Override
@@ -66,20 +55,29 @@ public class UserProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
-        //might not need to have  anew one
-        preferenceManager = new PreferenceManager(getActivity().getApplicationContext());
-
         initWidgets(rootView);
         getUserDetails();
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, false);
-                Intent intent = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-                getActivity().finish();
+                DocumentReference documentReference = firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS)
+                                .document( preferenceManager.getString(Constants.KEY_USER_ID));
+                HashMap<String, Object> updates = new HashMap<>();
+                updates.put(Constants.KEY_FCM_TOKEN, FieldValue.delete());
+                documentReference.update(updates)
+                        .addOnSuccessListener(unused -> {
+                            preferenceManager.clear();
+                            FirebaseAuth.getInstance().signOut();
+                            Intent intent = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
+                        });
+//                preferenceManager.clear();
+//                FirebaseAuth.getInstance().signOut();
+//                Intent intent = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
+//                startActivity(intent);
+//                getActivity().finish();
             }
         });
 
@@ -112,6 +110,7 @@ public class UserProfileFragment extends Fragment {
                         System.out.println("FAILED BECAUSE: " + e);
                     }
                 });
+        preferenceManager.putString(Constants.KEY_IMAGE, encodedImage);
     }
 
     private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
@@ -125,7 +124,6 @@ public class UserProfileFragment extends Fragment {
                             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                             profileImage.setImageBitmap(bitmap);
                             encodedImage = encodeImage(bitmap);
-                            //System.out.println("TEST ENCODED IMAGE ------------ " + encodedImage);
                             updateImageFirestore();
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
@@ -164,6 +162,7 @@ public class UserProfileFragment extends Fragment {
         profileImage = rootView.findViewById(R.id.userProfileImage);
         user = auth.getCurrentUser();
         firebaseFirestore = FirebaseFirestore.getInstance();
+        preferenceManager = new PreferenceManager(getActivity().getApplicationContext());
     }
 
 }

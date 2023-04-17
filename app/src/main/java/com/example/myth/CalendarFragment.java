@@ -22,9 +22,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myth.activities.NewEventActivity;
+import com.example.myth.adapters.CalendarAdapter;
+import com.example.myth.adapters.EventAdapter;
 import com.example.myth.utilities.CalendarUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -37,7 +41,9 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
 
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
-    private Button previousMonthBtn, nextMonthBtn, addEventBtn;
+    private Button previousMonthBtn;
+    private Button nextMonthBtn;
+    private FloatingActionButton addEventBtn;
     private static ListView eventListView;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -57,12 +63,8 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         setMonthView();
 
         addEventBtn.setOnClickListener(new View.OnClickListener() {
-            //Fragment newEventFragment = null;
             @Override
             public void onClick(View v) {
-                //newEventFragment = new NewEventFragmentSOONTODELETE();
-                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.body_container, newEventFragment).commit();
-
                 Intent intent = new Intent(getActivity(), NewEventActivity.class);
                 getActivity().startActivity(intent);
             }
@@ -109,7 +111,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         monthYearText = rootView.findViewById(R.id.monthYear);
         previousMonthBtn = (Button) rootView.findViewById(R.id.previousMonthBtn);
         nextMonthBtn = (Button) rootView.findViewById(R.id.nextMonthBtn);
-        addEventBtn = (Button) rootView.findViewById(R.id.addItemCalendarBtn);
+        addEventBtn = (FloatingActionButton) rootView.findViewById(R.id.addItemCalendarBtn);
         eventListView = rootView.findViewById(R.id.eventListView);
     }
 

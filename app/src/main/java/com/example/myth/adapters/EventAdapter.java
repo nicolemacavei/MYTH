@@ -1,4 +1,4 @@
-package com.example.myth;
+package com.example.myth.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,9 +9,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 
-import java.time.LocalTime;
+import com.example.myth.Event;
+import com.example.myth.R;
+
 import java.util.List;
 
 public class EventAdapter extends ArrayAdapter<Event>{
@@ -26,7 +27,7 @@ public class EventAdapter extends ArrayAdapter<Event>{
         Event event = getItem(position);
 
         if(convertView == null)
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.event_cell, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_container_event, parent, false);
 
         TextView eventCellTV = convertView.findViewById(R.id.eventCellText);
         int hour = event.getHour();

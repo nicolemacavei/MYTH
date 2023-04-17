@@ -1,4 +1,4 @@
-package com.example.myth;
+package com.example.myth.adapters;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myth.CalendarViewHolder;
+import com.example.myth.R;
 import com.example.myth.utilities.CalendarUtils;
 
 import java.time.LocalDate;
@@ -26,7 +28,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
     @Override
     public CalendarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.calendar_cell, parent, false);
+        View view = inflater.inflate(R.layout.container_calendar_day, parent, false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.height = (int) (parent.getHeight() * 0.1666666);
         return new CalendarViewHolder(view, onItemListener, dayOfMonth);

@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.UsersListFragment"
+    tools:context=".activities.FriendsListActivity"
     android:animateLayoutChanges="true"
-    android:background="@color/purple_500">
+    android:background="@color/purple_200">
 
     <TextView
         android:id="@+id/selectUserTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/select_user_usersList"
+        android:text="@string/close_friends"
         android:textColor="@color/white"
         android:textSize="25sp"
         android:fontFamily="sans-serif-light"
@@ -31,16 +31,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/selectUserTextView">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/usersRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:orientation="vertical"
-            android:overScrollMode="never"
-            android:visibility="gone"
-            android:padding="20sp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/friendsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        android:visibility="gone"
+        android:padding="20sp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </FrameLayout>
 

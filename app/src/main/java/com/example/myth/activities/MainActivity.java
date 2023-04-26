@@ -8,11 +8,12 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.myth.CalendarFragment;
-import com.example.myth.ChatFragment;
+import com.example.myth.fragments.CalendarFragment;
+import com.example.myth.fragments.NotificationsFragment;
 import com.example.myth.R;
-import com.example.myth.UserProfileFragment;
-import com.example.myth.UsersListFragment;
+import com.example.myth.fragments.TodaysEventsFragment;
+import com.example.myth.fragments.UserProfileFragment;
+import com.example.myth.fragments.UsersListFragment;
 import com.example.myth.utilities.Constants;
 import com.example.myth.utilities.PreferenceManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -45,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.bottom_chat:
-                        fragment = new ChatFragment();
+                        fragment = new NotificationsFragment();
                         break;
 
                     case R.id.bottom_meeting:
-                        fragment = new UsersListFragment();
+                        fragment = new TodaysEventsFragment();
                         break;
 
                     case R.id.bottom_settings:

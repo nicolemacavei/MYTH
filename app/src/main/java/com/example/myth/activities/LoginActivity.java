@@ -48,13 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        auth = FirebaseAuth.getInstance();
-        loginEmail = findViewById(R.id.emailLoginEditText);
-        loginPassword = findViewById(R.id.passwordEditText);
-        loginButton = findViewById(R.id.loginBtn);
-        registerButton = findViewById(R.id.registerPageBtn);
-        resetPassword = findViewById(R.id.resetPasswordPageBtn);
+        initWidgets();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +98,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void initWidgets() {
+        auth = FirebaseAuth.getInstance();
+        loginEmail = findViewById(R.id.emailLoginEditText);
+        loginPassword = findViewById(R.id.passwordEditText);
+        loginButton = findViewById(R.id.loginBtn);
+        registerButton = findViewById(R.id.registerPageBtn);
+        resetPassword = findViewById(R.id.resetPasswordPageBtn);
+    }
+
     private void setSharedPrefs(String userId) {
         preferenceManager.putString(Constants.KEY_USER_ID, userId);
         preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
@@ -113,12 +116,10 @@ public class LoginActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         DocumentReference userDetails = firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS).document(userId);
-        System.out.println(" TEST USER DETAILS: " + userDetails);
         userDetails.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 image = documentSnapshot.getString(Constants.KEY_IMAGE);
-                System.out.println("IMAGE TEST " + image);
                 preferenceManager.putString(Constants.KEY_IMAGE, image);
             }
         });

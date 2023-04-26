@@ -1,8 +1,7 @@
-package com.example.myth;
+package com.example.myth.fragments;
 
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.myth.R;
+import com.example.myth.User;
+import com.example.myth.adapters.NotificationAdapter;
 import com.example.myth.adapters.UsersAdapter;
-import com.example.myth.databinding.ActivityMainBinding;
 import com.example.myth.utilities.Constants;
 import com.example.myth.utilities.PreferenceManager;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -20,50 +21,53 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsersListFragment extends Fragment {
+public class NotificationsFragment extends Fragment {
 
     private PreferenceManager preferenceManager;
-    private RecyclerView usersRecyclerView;
+    private RecyclerView notificationRecyclerView;
 
-    public UsersListFragment() {
+    public NotificationsFragment() {
         // Required empty public constructor
     }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+//
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_users_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_notifications_list, container, false);
         initWidgets(rootView);
-        getUsers();
+        getNotifications();
+
         return rootView;
     }
 
-    private void initWidgets(View rootView) {
+    private void initWidgets(View rootView){
         preferenceManager = new PreferenceManager(getActivity().getApplicationContext());
-        usersRecyclerView = rootView.findViewById(R.id.usersRecyclerView);
+        notificationRecyclerView = rootView.findViewById(R.id.notificationRecyclerView);
     }
 
-    private void getUsers(){
+    private void getNotifications() {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        database.collection(Constants.KEY_COLLECTION_USERS).get()
+        String currentUserId = preferenceManager.getString(Constants.KEY_USER_ID);
+
+        database.collection(Constants.KEY_COLLECTION_USERS).document(currentUserId)
+                .collection(Constants.KEY_COLLECTION_REQUEST).get()
                 .addOnCompleteListener(task -> {
-                    String currentUserId = preferenceManager.getString(Constants.KEY_USER_ID);
+
                     if(task.isSuccessful() && task.getResult() != null){
                         List<User> users = new ArrayList<>();
                         for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
-                            if(currentUserId.equals(queryDocumentSnapshot.getId()))
-                                continue;
-
+                            String userId = queryDocumentSnapshot.getString(Constants.KEY_USER_ID);
                             String email = queryDocumentSnapshot.getString(Constants.KEY_EMAIL);
                             String name = queryDocumentSnapshot.getString(Constants.KEY_NAME);
                             String image = queryDocumentSnapshot.getString(Constants.KEY_IMAGE);
                             String token = queryDocumentSnapshot.getString(Constants.KEY_FCM_TOKEN);
                             User user = new User(
+                                    userId,
                                     email,
                                     name,
                                     image,
@@ -72,12 +76,12 @@ public class UsersListFragment extends Fragment {
                             users.add(user);
                         }
                         if(users.size() > 0){
-                            UsersAdapter usersAdapter = new UsersAdapter(users);
-                            System.out.println("USERS ARE:  " + users);
-                            usersRecyclerView.setAdapter(usersAdapter);
-                            usersRecyclerView.setVisibility(View.VISIBLE);
+                            NotificationAdapter notificationAdapter = new NotificationAdapter(users, currentUserId);
+                            notificationRecyclerView.setAdapter(notificationAdapter);
+                            notificationRecyclerView.setVisibility(View.VISIBLE);
                         }
                     }
                 });
     }
+
 }

@@ -89,7 +89,7 @@ public class NewEventActivity extends AppCompatActivity {
         int minute = eventMinute.getValue();
         String eventNameString = eventName.getText().toString();
         String eventDetailsString = eventDetails.getText().toString();
-        String uniqueID = UUID.randomUUID().toString();
+        String uniqueID = hour + "_" + minute + "_" + eventNameString;
         String eventFormattedDate = CalendarUtils.formattedDate(CalendarUtils.selectedDate);
 
         Event newEvent = new Event(

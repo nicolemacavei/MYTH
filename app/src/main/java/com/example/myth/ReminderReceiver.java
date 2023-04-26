@@ -1,8 +1,6 @@
 package com.example.myth;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,11 +9,8 @@ import android.content.Intent;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.myth.fragments.CalendarFragment;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 public class ReminderReceiver extends BroadcastReceiver {
     private String message = "New Event upcoming";

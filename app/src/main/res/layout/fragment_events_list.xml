@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.UsersListFragment"
-    android:animateLayoutChanges="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.TodaysEventsFragment"
+    android:padding="5sp"
+    android:scrollbars="vertical"
     android:background="@color/purple_500">
 
     <TextView
         android:id="@+id/selectUserTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/select_user_usersList"
+        android:text="@string/today_s_events"
         android:textColor="@color/white"
         android:textSize="25sp"
         android:fontFamily="sans-serif-light"
@@ -26,21 +27,20 @@
         android:id="@+id/userFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/background_content_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/selectUserTextView">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/usersRecyclerView"
+            android:id="@+id/eventsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:orientation="vertical"
             android:overScrollMode="never"
             android:visibility="gone"
-            android:padding="20sp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     </FrameLayout>
 

@@ -1,14 +1,11 @@
-package com.example.myth;
+package com.example.myth.fragments;
 
 import static com.example.myth.utilities.CalendarUtils.daysInMonthArray;
 import static com.example.myth.utilities.CalendarUtils.monthYearFromDate;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,17 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.myth.Event;
+import com.example.myth.R;
 import com.example.myth.activities.NewEventActivity;
 import com.example.myth.adapters.CalendarAdapter;
 import com.example.myth.adapters.EventAdapter;
 import com.example.myth.utilities.CalendarUtils;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.myth.utilities.Constants;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,11 +36,10 @@ import java.util.ArrayList;
 public class CalendarFragment extends Fragment implements CalendarAdapter.OnItemListener{
 
     private TextView monthYearText;
-    private RecyclerView calendarRecyclerView;
+    private RecyclerView calendarRecyclerView, eventRecyclerView;
     private Button previousMonthBtn;
     private Button nextMonthBtn;
     private FloatingActionButton addEventBtn;
-    private static ListView eventListView;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private String userId = auth.getCurrentUser().getUid();
@@ -83,25 +78,25 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
                 setMonthView();
             }
         });
-        eventListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Delete event")
-                        .setMessage("Are you sure?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                removeEvent(position);
-                            }
-                        })
-                        .setNegativeButton("No", null)
-                        .show();
-
-                return true;
-            }
-        });
+//        eventRecyclerView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                new AlertDialog.Builder(getActivity())
+//                        .setTitle("Delete event")
+//                        .setMessage("Are you sure?")
+//                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                removeEvent(position);
+//                            }
+//                        })
+//                        .setNegativeButton("No", null)
+//                        .show();
+//
+//                return true;
+//            }
+//        });
 
         return rootView;
     }
@@ -112,7 +107,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         previousMonthBtn = (Button) rootView.findViewById(R.id.previousMonthBtn);
         nextMonthBtn = (Button) rootView.findViewById(R.id.nextMonthBtn);
         addEventBtn = (FloatingActionButton) rootView.findViewById(R.id.addItemCalendarBtn);
-        eventListView = rootView.findViewById(R.id.eventListView);
+        eventRecyclerView = rootView.findViewById(R.id.eventRecyclerView);
     }
 
     private void setMonthView() {
@@ -134,10 +129,11 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
 
     private void setEventAdapter() {
         String dateFormatted = CalendarUtils.formattedDate(CalendarUtils.selectedDate);
-        //LocalTime time = LocalTime.now();
 
-        Task<QuerySnapshot> eventsList = firebaseFirestore.collection("User").document(userId)
-                .collection("Date").document(CalendarUtils.selectedDate.toString()).collection("Event").get();
+        Task<QuerySnapshot> eventsList = firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS).document(userId)
+                .collection(Constants.KEY_COLLECTION_DATE).document(CalendarUtils.selectedDate.toString())
+                .collection(Constants.KEY_COLLECTION_EVENT)
+                .orderBy(Constants.KEY_EVENT_HOUR).get();
 
         eventsList.addOnSuccessListener(task -> {
 
@@ -145,18 +141,22 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
             for(QueryDocumentSnapshot queryDocSn : task){
 
                 String eventId = queryDocSn.getId();
-                String name = queryDocSn.getString("name");
-                String details = queryDocSn.getString("details");
-                int duration = queryDocSn.getLong("duration").intValue();
-                int remindBefore = queryDocSn.getLong("remind").intValue();
-                int hour = queryDocSn.getLong("hour").intValue();
-                int minute = queryDocSn.getLong("minute").intValue();
+                String name = queryDocSn.getString(Constants.KEY_EVENT_NAME);
+                String details = queryDocSn.getString(Constants.KEY_EVENT_DETAILS);
+                int duration = queryDocSn.getLong(Constants.KEY_EVENT_DURATION).intValue();
+                int remindBefore = queryDocSn.getLong(Constants.KEY_EVENT_REMIND).intValue();
+                int hour = queryDocSn.getLong(Constants.KEY_EVENT_HOUR).intValue();
+                int minute = queryDocSn.getLong(Constants.KEY_EVENT_MINUTE).intValue();
 
                 Event event = new Event(eventId, name, details, dateFormatted, duration, remindBefore, hour, minute);
                 events.add(event);
             }
-            EventAdapter eventAdapter = new EventAdapter(getActivity(), events);
-            eventListView.setAdapter(eventAdapter);
+            if(events.size() > 0) {
+                EventAdapter eventAdapter = new EventAdapter(getActivity(), events);
+                eventRecyclerView.setAdapter(eventAdapter);
+                eventRecyclerView.setVisibility(View.VISIBLE);
+            } else
+                eventRecyclerView.setVisibility(View.GONE);
         });
     }
 
@@ -168,24 +168,24 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         }
     }
 
-    private void removeEvent(int position) {
-        System.out.println("POSITION IS: " + position);
-        firebaseFirestore.collection("User").document(userId)
-                .collection("Date").document(CalendarUtils.selectedDate.toString())
-                .collection("Event").document(events.get(position).getEventId())
-                .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            events.remove(events.get(position));
-                            EventAdapter eventAdapter = new EventAdapter(getActivity(), events);
-                            eventListView.setAdapter(eventAdapter);
-                        }
-                        else {
-                            Toast.makeText(getActivity(), "Error " + task.getException(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-    }
+//    private void removeEvent(int position) {
+//        System.out.println("POSITION IS: " + position);
+//        firebaseFirestore.collection("User").document(userId)
+//                .collection("Date").document(CalendarUtils.selectedDate.toString())
+//                .collection("Event").document(events.get(position).getEventId())
+//                .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if(task.isSuccessful()){
+//                            events.remove(events.get(position));
+//                            EventAdapter eventAdapter = new EventAdapter(getActivity(), events);
+//                            eventRecyclerView.setAdapter(eventAdapter);
+//                        }
+//                        else {
+//                            Toast.makeText(getActivity(), "Error " + task.getException(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+//
+//    }
 }

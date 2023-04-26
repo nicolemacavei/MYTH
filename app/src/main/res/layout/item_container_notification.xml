@@ -20,47 +20,75 @@
         android:layout_height="1sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageProfile"
         app:layout_constraintStart_toEndOf="@+id/imageProfile"
-        app:layout_constraintTop_toTopOf="@+id/imageProfile"
-        />
+        app:layout_constraintTop_toTopOf="@+id/imageProfile"/>
+
+    <TextView
+        android:id="@+id/textRequest"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/purple_500"
+        android:textSize="10sp"
+        android:text="A new Connection Request from "
+        app:layout_constraintEnd_toStartOf="@+id/rejectUserBtn"
+        app:layout_constraintStart_toEndOf="@+id/imageProfile"
+        app:layout_constraintBottom_toTopOf="@+id/textName"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/textName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/midnightblue"
         android:textSize="17sp"
-        app:layout_constraintBottom_toTopOf="@+id/viewSupporter"
-        app:layout_constraintEnd_toStartOf="@id/addUserBtn"
-        app:layout_constraintStart_toEndOf="@+id/imageProfile"/>
+        app:layout_constraintBottom_toTopOf="@+id/textEmail"
+        app:layout_constraintEnd_toStartOf="@+id/rejectUserBtn"
+        app:layout_constraintStart_toEndOf="@+id/imageProfile"
+        app:layout_constraintTop_toTopOf="@+id/textRequest"/>
 
     <TextView
         android:id="@+id/textEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/purple_500"
-        android:textSize="13sp"
-        app:layout_constraintEnd_toStartOf="@+id/addUserBtn"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toStartOf="@+id/rejectUserBtn"
         app:layout_constraintStart_toEndOf="@+id/imageProfile"
-        app:layout_constraintTop_toBottomOf="@+id/viewSupporter"/>
+        app:layout_constraintTop_toBottomOf="@+id/textName"/>
 
     <Button
-        android:id="@+id/addUserBtn"
+        android:id="@+id/acceptUserBtn"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rejectUserBtn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:backgroundTint="@android:color/transparent"
+        android:drawableEnd="@drawable/ic_accept_connection"
+        android:background="@android:color/transparent"/>
+
+    <Button
+        android:id="@+id/rejectUserBtn"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/acceptUserBtn"
         app:layout_constraintStart_toEndOf="@+id/textEmail"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:backgroundTint="@android:color/transparent"
-        android:drawableEnd="@drawable/ic_add_user"
+        android:drawableEnd="@drawable/ic_delete_connection"
         android:background="@android:color/transparent"/>
 
 

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/purple_200">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:scrollbars="vertical"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                android:layout_margin="15dp"
+                android:alpha="0.7"
+                android:gravity="center"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <EditText
+                        android:id="@+id/nameEventEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:hint="@string/name_of_the_event"
+                        android:inputType="text"
+                        android:paddingStart="20dp"
+                        android:textColor="@color/midnightblue"
+                        android:paddingEnd="0dp"/>
+
+                    <TextView
+                        android:id="@+id/eventDateText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:hint="Date"
+                        android:textSize="20sp"
+                        android:paddingStart="20dp"
+                        android:textColor="@color/midnightblue"
+                        android:paddingEnd="0dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:hint="Duration"
+                        android:textSize="20sp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="0dp"
+                        android:textColor="@color/midnightblue"/>
+
+                    <com.google.android.material.slider.Slider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:id="@+id/durationSlideBar"
+                        android:valueFrom="10"
+                        android:valueTo="120"
+                        android:value="30"
+                        android:stepSize="10.0"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginTop="10dp"
+                        android:hint="Remind me before"
+                        android:textSize="20sp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="0dp"
+                        android:textColor="@color/midnightblue"/>
+
+                    <com.google.android.material.slider.Slider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:id="@+id/remindBeforeSlideBar"
+                        android:valueFrom="0"
+                        android:valueTo="60"
+                        android:value="10"
+                        android:stepSize="10.0"/>
+
+                    <EditText
+                        android:id="@+id/detailsEventEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:hint="@string/details_new_event"
+                        android:inputType="text"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="0dp"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/addEventBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/add_event_btn"
+                        android:textColor="@color/midnightblue"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

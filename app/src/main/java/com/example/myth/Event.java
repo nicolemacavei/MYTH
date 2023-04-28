@@ -6,9 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.time.LocalTime;
 
 public class Event {
-    private String name, details;
-    private String date;
-    private String eventId;
+    private String name, details, date, eventId;
     private int hour,minute, duration, remind;
 
     public Event(String eventId, String name, String details, String date, int duration, int remind, int hour, int minute) {

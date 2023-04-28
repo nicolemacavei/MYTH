@@ -14,9 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +29,8 @@ import com.example.myth.R;
 import com.example.myth.activities.FriendsListActivity;
 import com.example.myth.activities.LoginActivity;
 import com.example.myth.activities.MainActivity;
-import com.example.myth.activities.NewEventActivity;
-import com.example.myth.activities.ResetPasswordActivity;
 import com.example.myth.utilities.Constants;
 import com.example.myth.utilities.PreferenceManager;
-import com.google.android.gms.common.util.IOUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,8 +42,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.checkerframework.checker.units.qual.A;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;

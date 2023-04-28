@@ -19,10 +19,6 @@
             android:name=".activities.FriendsListActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.NewEventActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Myth.NoActionBarAndStatus" />
-        <activity
             android:name=".activities.ResetPasswordActivity"
             android:exported="false"
             android:theme="@style/Theme.Myth.NoActionBarAndStatus" />
@@ -38,6 +34,10 @@
         </activity>
         <activity
             android:name=".activities.RegisterActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Myth.NoActionBarAndStatus" />
+        <activity
+            android:name=".activities.NewEventActivity"
             android:exported="true"
             android:theme="@style/Theme.Myth.NoActionBarAndStatus" />
         <activity

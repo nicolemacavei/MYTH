@@ -6,8 +6,10 @@ import static com.example.myth.utilities.CalendarUtils.monthYearFromDate;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myth.Event;
 import com.example.myth.R;
@@ -23,6 +26,8 @@ import com.example.myth.adapters.CalendarAdapter;
 import com.example.myth.adapters.EventAdapter;
 import com.example.myth.utilities.CalendarUtils;
 import com.example.myth.utilities.Constants;
+import com.example.myth.utilities.PreferenceManager;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,6 +49,8 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private String userId = auth.getCurrentUser().getUid();
     private static ArrayList<Event> events = new ArrayList<>();
+    EventAdapter eventAdapter;
+    private PreferenceManager preferenceManager;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -78,25 +85,6 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
                 setMonthView();
             }
         });
-//        eventRecyclerView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                new AlertDialog.Builder(getActivity())
-//                        .setTitle("Delete event")
-//                        .setMessage("Are you sure?")
-//                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                removeEvent(position);
-//                            }
-//                        })
-//                        .setNegativeButton("No", null)
-//                        .show();
-//
-//                return true;
-//            }
-//        });
 
         return rootView;
     }
@@ -108,6 +96,9 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         nextMonthBtn = (Button) rootView.findViewById(R.id.nextMonthBtn);
         addEventBtn = (FloatingActionButton) rootView.findViewById(R.id.addItemCalendarBtn);
         eventRecyclerView = rootView.findViewById(R.id.eventRecyclerView);
+        preferenceManager = new PreferenceManager(getContext());
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(eventRecyclerView);
     }
 
     private void setMonthView() {
@@ -152,13 +143,29 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
                 events.add(event);
             }
             if(events.size() > 0) {
-                EventAdapter eventAdapter = new EventAdapter(getActivity(), events);
+                eventAdapter = new EventAdapter(getActivity(), events);
                 eventRecyclerView.setAdapter(eventAdapter);
                 eventRecyclerView.setVisibility(View.VISIBLE);
             } else
                 eventRecyclerView.setVisibility(View.GONE);
         });
     }
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,
+            ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+            if(direction == ItemTouchHelper.RIGHT){
+                removeEvent(position);
+            }
+        }
+    };
 
     @Override
     public void onItemClick(int position, LocalDate date) {
@@ -168,24 +175,23 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         }
     }
 
-//    private void removeEvent(int position) {
-//        System.out.println("POSITION IS: " + position);
-//        firebaseFirestore.collection("User").document(userId)
-//                .collection("Date").document(CalendarUtils.selectedDate.toString())
-//                .collection("Event").document(events.get(position).getEventId())
-//                .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if(task.isSuccessful()){
-//                            events.remove(events.get(position));
-//                            EventAdapter eventAdapter = new EventAdapter(getActivity(), events);
-//                            eventRecyclerView.setAdapter(eventAdapter);
-//                        }
-//                        else {
-//                            Toast.makeText(getActivity(), "Error " + task.getException(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
-//
-//    }
+    private void removeEvent(int position) {
+        firebaseFirestore.collection("User").document(userId)
+                .collection("Date").document(CalendarUtils.selectedDate.toString())
+                .collection("Event").document(events.get(position).getEventId())
+                .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            events.remove(events.get(position));
+                            EventAdapter eventAdapter = new EventAdapter(getActivity(), events);
+                            eventRecyclerView.setAdapter(eventAdapter);
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "Error " + task.getException(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+    }
 }

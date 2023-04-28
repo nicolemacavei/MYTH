@@ -82,7 +82,6 @@ public class TodaysEventsFragment extends Fragment {
                 Event event = new Event(eventId, name, details, null, duration, remindBefore, hour, minute);
                 events.add(event);
             }
-            System.out.println("TEST: " + events.size());
             if(events.size() > 0) {
                 EventAdapter eventAdapter = new EventAdapter(getActivity(), events);
                 eventsRecyclerView.setAdapter(eventAdapter);

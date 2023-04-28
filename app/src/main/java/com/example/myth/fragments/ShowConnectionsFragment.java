@@ -1,10 +1,14 @@
-package com.example.myth.activities;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
+package com.example.myth.fragments;
 
 import android.os.Bundle;
+
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.myth.R;
 import com.example.myth.User;
@@ -17,28 +21,37 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendsListActivity extends AppCompatActivity {
+public class ShowConnectionsFragment extends DialogFragment {
 
     private PreferenceManager preferenceManager;
     private RecyclerView usersRecyclerView;
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friends_list);
-        initWidgets();
-        getUsers();
+    public ShowConnectionsFragment() {
+        // Required empty public constructor
     }
 
-    private void initWidgets() {
-        preferenceManager = new PreferenceManager(getApplicationContext());
-        usersRecyclerView = findViewById(R.id.friendsRecyclerView);
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.pop_up_connections, container);
+        initWidgets(rootView);
+        getUsers();
+
+        this.getDialog().setTitle("TV TEST");
+
+        return rootView;
+    }
+
+    private void initWidgets(View rootView) {
+        preferenceManager = new PreferenceManager(getActivity().getApplicationContext());
+        usersRecyclerView = rootView.findViewById(R.id.connectionListRecyclerView);
     }
 
     private void getUsers() {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        database.collection(Constants.KEY_COLLECTION_USERS).document(preferenceManager.getString(Constants.KEY_USER_ID)).collection(Constants.KEY_COLLECTION_CONNECTION).get()
+        database.collection(Constants.KEY_COLLECTION_USERS).document(preferenceManager.getString(Constants.KEY_USER_ID))
+                .collection(Constants.KEY_COLLECTION_CONNECTION).get()
                 .addOnCompleteListener(task -> {
                     String currentUserId = preferenceManager.getString(Constants.KEY_USER_ID);
                     if(task.isSuccessful() && task.getResult() != null){

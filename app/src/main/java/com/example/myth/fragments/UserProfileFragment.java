@@ -12,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
 import android.text.InputType;
@@ -26,7 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myth.R;
-import com.example.myth.activities.FriendsListActivity;
 import com.example.myth.activities.LoginActivity;
 import com.example.myth.activities.MainActivity;
 import com.example.myth.utilities.Constants;
@@ -81,8 +81,10 @@ public class UserProfileFragment extends Fragment {
         friendsList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), FriendsListActivity.class);
-                getActivity().startActivity(intent);
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.body_container, new ConnectionsListFragment() );
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 

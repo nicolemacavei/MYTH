@@ -19,15 +19,16 @@
                 android:layout_margin="15dp"
                 android:alpha="0.7"
                 android:gravity="center"
-                app:cardCornerRadius="30dp"
-                app:cardElevation="20dp">
+                app:cardCornerRadius="20dp"
+                app:cardElevation="20dp"
+                app:cardBackgroundColor="@color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:paddingStart="20dp">
 
                     <EditText
                         android:id="@+id/nameEventEditText"
@@ -37,21 +38,19 @@
                         android:layout_marginEnd="20dp"
                         android:hint="@string/name_of_the_event"
                         android:inputType="text"
-                        android:paddingStart="20dp"
-                        android:textColor="@color/midnightblue"
-                        android:paddingEnd="0dp"/>
+                        android:padding="20dp"
+                        android:textColor="@color/midnightblue"/>
 
-                    <TextView
-                        android:id="@+id/eventDateText"
-                        android:layout_width="match_parent"
+                    <Button
+                        android:id="@+id/chooseConnectionBtn"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:hint="Date"
-                        android:textSize="20sp"
-                        android:paddingStart="20dp"
+                        android:background="@android:color/transparent"
+                        android:text="Choose Connection"
                         android:textColor="@color/midnightblue"
-                        android:paddingEnd="0dp"/>
+                        android:textAlignment="viewStart"
+                        android:padding="20dp"/>
+
 
                     <TextView
                         android:layout_width="match_parent"
@@ -73,27 +72,6 @@
                         android:value="30"
                         android:stepSize="10.0"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        android:layout_marginTop="10dp"
-                        android:hint="Remind me before"
-                        android:textSize="20sp"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="0dp"
-                        android:textColor="@color/midnightblue"/>
-
-                    <com.google.android.material.slider.Slider
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="20dp"
-                        android:id="@+id/remindBeforeSlideBar"
-                        android:valueFrom="0"
-                        android:valueTo="60"
-                        android:value="10"
-                        android:stepSize="10.0"/>
-
                     <EditText
                         android:id="@+id/detailsEventEditText"
                         android:layout_width="match_parent"
@@ -106,14 +84,14 @@
                         android:paddingEnd="0dp"/>
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/addEventBtn"
+                        android:id="@+id/suggestTimingBtn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
                         android:layout_marginBottom="20dp"
-                        android:text="@string/add_event_btn"
+                        android:text="@string/suggest_timing_btn"
                         android:textColor="@color/midnightblue"/>
 
                 </LinearLayout>

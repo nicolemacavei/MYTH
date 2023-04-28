@@ -15,9 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Myth"
         tools:targetApi="31">
-        <activity
-            android:name=".activities.FriendsListActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".fragments.ConnectionsListFragment"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".activities.ResetPasswordActivity"
             android:exported="false"

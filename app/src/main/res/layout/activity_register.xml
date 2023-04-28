@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="@color/purple_500"
+    android:background="@color/purple_200"
     tools:context=".activities.RegisterActivity">
 
     <TextView
@@ -26,7 +26,8 @@
         android:layout_margin="30dp"
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp"
-        android:alpha="0.6">
+        android:alpha="0.7"
+        app:cardBackgroundColor="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"

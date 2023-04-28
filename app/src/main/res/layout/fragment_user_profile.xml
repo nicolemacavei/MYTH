@@ -11,20 +11,24 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:alpha="0.9"
         app:cardCornerRadius="10dp"
         app:cardElevation="20dp"
-        android:alpha="1.0">
+        app:cardBackgroundColor="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="30dp"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="30dp"
-            android:weightSum="100"
-            android:textColor="@color/midnightblue">
+            android:orientation="horizontal"
+            android:textColor="@color/midnightblue"
+            android:weightSum="100">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/userProfileImage"
@@ -32,48 +36,48 @@
                 android:layout_height="90dp"
                 android:contentDescription="@string/userprofile"
                 android:scaleType="fitXY"
-                android:src="@drawable/default_profile_picture"/>
+                android:src="@drawable/default_profile_picture" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="0dp"
-            android:layout_marginStart="0dp"
-            android:layout_marginEnd="0dp"
-            android:textColor="@color/midnightblue">
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/userNameProfile"
-                android:layout_marginStart="20dp"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="sans-serif-light"
-                android:textSize="25sp"
-                android:textColor="@color/iconColors"
-                android:text="@string/full_name"/>
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:orientation="vertical"
+                android:textColor="@color/midnightblue">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/emailUserProfile"
-                android:layout_marginStart="20dp"
-                android:textColor="@color/iconColors"
-                android:fontFamily="sans-serif-light"
-                android:textSize="15sp"
-                android:text="@string/emailuserprofile"/>
+                <TextView
+                    android:id="@+id/userNameProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="15dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/full_name"
+                    android:textColor="@color/iconColors"
+                    android:textSize="25sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/cityUserProfile"
-                android:layout_marginStart="20dp"
-                android:textColor="@color/iconColors"
-                android:fontFamily="sans-serif-light"
-                android:textSize="15sp"
-                android:text="@string/enter_your_hometown"/>
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/emailUserProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/emailuserprofile"
+                    android:textColor="@color/iconColors"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/cityUserProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/enter_your_hometown"
+                    android:textColor="@color/iconColors"
+                    android:textSize="15sp" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -81,46 +85,46 @@
             android:id="@+id/userInformationLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="150dp"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="150dp"
             android:layout_marginEnd="30dp"
+            android:orientation="vertical"
             android:textColor="@color/midnightblue">
 
 
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:id="@+id/closeFriendsUserProfile"
-                    android:textColor="@color/iconColors"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="20sp"
-                    android:text="@string/close_friends_list"/>
-
-            <TextView
+                android:id="@+id/closeFriendsUserProfile"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:id="@+id/scanQRUserProfile"
-                android:textColor="@color/iconColors"
                 android:fontFamily="sans-serif-light"
-                android:textSize="20sp"
-                android:text="@string/scan_qr_code"/>
+                android:text="@string/close_friends_list"
+                android:textColor="@color/iconColors"
+                android:textSize="20sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/changePasswordBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:text="@string/change_password"
-                    android:textColor="@color/midnightblue"/>
+            <TextView
+                android:id="@+id/scanQRUserProfile"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/scan_qr_code"
+                android:textColor="@color/iconColors"
+                android:textSize="20sp" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/logoutBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:text="@string/logoutButton"
-                    android:textColor="@color/midnightblue"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/changePasswordBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:text="@string/change_password"
+                android:textColor="@color/midnightblue" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/logoutBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:text="@string/logoutButton"
+                android:textColor="@color/midnightblue" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/deletUserBtn"
@@ -128,9 +132,9 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:text="@string/delete_account"
-                android:textColor="@color/midnightblue"/>
+                android:textColor="@color/midnightblue" />
 
-            </LinearLayout>
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 

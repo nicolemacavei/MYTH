@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
         preferenceManager = new PreferenceManager(getApplicationContext());
         getToken();
         navigationView = findViewById(R.id.bottom_navigation);
-        getSupportFragmentManager().beginTransaction().replace(R.id.body_container, new CalendarFragment()).commit();
-        navigationView.setSelectedItemId(R.id.bottom_calendar);
+        getSupportFragmentManager().beginTransaction().replace(R.id.body_container, new TodaysEventsFragment()).commit();
+        navigationView.setSelectedItemId(R.id.bottom_meeting);
         navigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

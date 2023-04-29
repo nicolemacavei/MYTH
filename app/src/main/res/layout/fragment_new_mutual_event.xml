@@ -51,6 +51,17 @@
                         android:textAlignment="viewStart"
                         android:padding="20dp"/>
 
+                    <TextView
+                        android:id="@+id/userSelectedText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:textSize="20sp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:textColor="@color/midnightblue"
+                        android:visibility="gone"/>
+
 
                     <TextView
                         android:layout_width="match_parent"

@@ -1,6 +1,5 @@
 package com.example.myth.adapters;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -16,6 +15,7 @@ import com.example.myth.User;
 
 import com.example.myth.databinding.ItemContainerUserBinding;
 import com.example.myth.firebase.FCMSend;
+import com.example.myth.interfaces.RecyclerViewInterface;
 import com.example.myth.utilities.Constants;
 import com.example.myth.utilities.PreferenceManager;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,13 +24,17 @@ import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder>{
 
+    private final RecyclerViewInterface recyclerViewInterface;
     private final List<User> users;
     private final String currentUID;
+    private final boolean connected;
     private PreferenceManager preferenceManager;
 
-    public UsersAdapter(List<User> users, String currentUID) {
+    public UsersAdapter(List<User> users, String currentUID, boolean connected, RecyclerViewInterface recyclerViewInterface) {
         this.users = users;
         this.currentUID = currentUID;
+        this.connected = connected;
+        this.recyclerViewInterface = recyclerViewInterface;
     }
 
     @NonNull
@@ -70,6 +74,20 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
             binding.textEmail.setText(user.getEmail());
             if(user.getImage() != null) {
                 binding.imageProfile.setImageBitmap(getUserImage(user.getImage()));
+            }
+            if(connected) {
+                binding.addUserBtn.setVisibility(View.GONE);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(recyclerViewInterface != null){
+                            int position = getAdapterPosition();
+                            if(position != RecyclerView.NO_POSITION){
+                                recyclerViewInterface.onItemClick(position);
+                            }
+                        }
+                    }
+                });
             }
             binding.addUserBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

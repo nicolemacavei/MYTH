@@ -1,15 +1,11 @@
 package com.example.myth.fragments;
 
-import static android.content.ContentValues.TAG;
-
-import android.content.Context;
-import android.os.Bundle;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,37 +22,32 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowConnectionsFragment extends DialogFragment implements RecyclerViewInterface {
+public class ConnectionsListFragment extends DialogFragment implements RecyclerViewInterface {
 
     private PreferenceManager preferenceManager;
     private RecyclerView usersRecyclerView;
 
-    private List<User> users = new ArrayList<>();
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_friends_list);
+//        initWidgets();
+//        getUsers();
+//    }
 
-    public ShowConnectionsFragment() {
-        // Required empty public constructor
-    }
-
-    public interface OnInputSelected{
-        void sendInput(User userClicked);
-    }
-    public OnInputSelected onInputSelected;
-
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.pop_up_connections, container);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_friends_list, container, false);
         initWidgets(rootView);
         getUsers();
-
-        this.getDialog().setTitle("TV TEST");
 
         return rootView;
     }
 
     private void initWidgets(View rootView) {
         preferenceManager = new PreferenceManager(getActivity().getApplicationContext());
-        usersRecyclerView = rootView.findViewById(R.id.connectionListRecyclerView);
+        usersRecyclerView = rootView.findViewById(R.id.friendsRecyclerView);
     }
 
     private void getUsers() {
@@ -66,7 +57,7 @@ public class ShowConnectionsFragment extends DialogFragment implements RecyclerV
                 .addOnCompleteListener(task -> {
                     String currentUserId = preferenceManager.getString(Constants.KEY_USER_ID);
                     if(task.isSuccessful() && task.getResult() != null){
-                        users.clear();
+                        List<User> users = new ArrayList<>();
                         for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
 
                             String userId = queryDocumentSnapshot.getString(Constants.KEY_USER_ID);
@@ -94,18 +85,6 @@ public class ShowConnectionsFragment extends DialogFragment implements RecyclerV
 
     @Override
     public void onItemClick(int position) {
-        User userSelected = users.get(position);
-        onInputSelected.sendInput(userSelected);
-        dismiss();
-    }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try{
-            onInputSelected = (OnInputSelected) getTargetFragment();
-        }catch (ClassCastException e){
-            Log.e(TAG, "onAttach: " + e.getMessage());
-        }
     }
 }

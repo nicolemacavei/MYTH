@@ -18,9 +18,15 @@ import android.widget.Toast;
 
 import com.example.myth.R;
 import com.example.myth.User;
+import com.example.myth.findTimeSlots.Meeting;
+import com.example.myth.findTimeSlots.TimeSlot;
 import com.example.myth.interfaces.RecyclerViewInterface;
+import com.example.myth.utilities.Constants;
+import com.example.myth.utilities.PreferenceManager;
 import com.google.android.material.slider.Slider;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 public class MutualEventFragment extends Fragment implements ShowConnectionsFragment.OnInputSelected{
 
@@ -29,7 +35,8 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
     private Slider eventDuration;
     FirebaseFirestore firebaseFirestore;
     TextView userSelectedTextView;
-    Bundle bundle;
+    private User selectedUser;
+    private PreferenceManager preferenceManager;
 
     public MutualEventFragment() {
         // Required empty public constructor
@@ -57,6 +64,16 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
             }
         });
 
+        suggestTimingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int duration = (int) eventDuration.getValue();
+                Meeting meeting = new Meeting(preferenceManager.getString(Constants.KEY_USER_ID), selectedUser.getUserId(), duration);
+                ArrayList<TimeSlot> availableHours = new ArrayList<>();
+                meeting.getBusyHours();
+            }
+        });
+
         return rootView;
     }
 
@@ -69,12 +86,14 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
         suggestTimingBtn = rootView.findViewById(R.id.suggestTimingBtn);
         firebaseFirestore = FirebaseFirestore.getInstance();
         userSelectedTextView = rootView.findViewById(R.id.userSelectedText);
+        preferenceManager = new PreferenceManager(getActivity().getApplicationContext());
     }
 
     @Override
     public void sendInput(User userSelected) {
         Log.e(TAG, "sendInput: " + userSelected.getFullName());
         chooseConnectionBtn.setVisibility(View.GONE);
+        selectedUser = userSelected;
         userSelectedTextView.setText(userSelected.getFullName());
         userSelectedTextView.setVisibility(View.VISIBLE);
     }

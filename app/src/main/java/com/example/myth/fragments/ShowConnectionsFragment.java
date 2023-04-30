@@ -49,7 +49,7 @@ public class ShowConnectionsFragment extends DialogFragment implements RecyclerV
         initWidgets(rootView);
         getUsers();
 
-        this.getDialog().setTitle("TV TEST");
+        this.getDialog().setTitle("Dialog ");
 
         return rootView;
     }

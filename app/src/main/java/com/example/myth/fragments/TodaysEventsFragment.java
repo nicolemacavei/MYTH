@@ -64,7 +64,7 @@ public class TodaysEventsFragment extends Fragment {
         Task<QuerySnapshot> eventsList = firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS).document(userId)
                 .collection(Constants.KEY_COLLECTION_DATE).document(CalendarUtils.selectedDate.toString())
                 .collection(Constants.KEY_COLLECTION_EVENT)
-                .orderBy(Constants.KEY_EVENT_HOUR).get();
+                .orderBy(Constants.KEY_TIME).get();
 
         eventsList.addOnSuccessListener(task -> {
 
@@ -76,10 +76,9 @@ public class TodaysEventsFragment extends Fragment {
                 String details = queryDocSn.getString(Constants.KEY_EVENT_DETAILS);
                 int duration = queryDocSn.getLong(Constants.KEY_EVENT_DURATION).intValue();
                 int remindBefore = queryDocSn.getLong(Constants.KEY_EVENT_REMIND).intValue();
-                int hour = queryDocSn.getLong(Constants.KEY_EVENT_HOUR).intValue();
-                int minute = queryDocSn.getLong(Constants.KEY_EVENT_MINUTE).intValue();
+                int time = queryDocSn.getLong(Constants.KEY_TIME).intValue();
 
-                Event event = new Event(eventId, name, details, null, duration, remindBefore, hour, minute);
+                Event event = new Event(eventId, name, details, null, duration, remindBefore, time);
                 events.add(event);
             }
             if(events.size() > 0) {

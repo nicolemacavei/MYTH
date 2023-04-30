@@ -6,8 +6,7 @@ public class Constants {
     public static final String KEY_COLLECTION_EVENT = "Event";
     public static final String KEY_COLLECTION_CONNECTION = "Connection";
     public static final String KEY_COLLECTION_REQUEST = "Request";
-    public static final String KEY_EVENT_HOUR = "hour";
-    public static final String KEY_EVENT_MINUTE = "minute";
+    public static final String KEY_TIME = "time";
     public static final String KEY_EVENT_NAME = "name";
     public static final String KEY_EVENT_DURATION = "duration";
     public static final String KEY_EVENT_DETAILS = "details";

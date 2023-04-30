@@ -7,15 +7,14 @@ import java.time.LocalTime;
 
 public class Event {
     private String name, details, date, eventId;
-    private int hour,minute, duration, remind;
+    private int time, duration, remind;
 
-    public Event(String eventId, String name, String details, String date, int duration, int remind, int hour, int minute) {
+    public Event(String eventId, String name, String details, String date, int duration, int remind, int time) {
         this.eventId = eventId;
         this.name = name;
         this.details = details;
         this.date = date;
-        this.hour = hour;
-        this.minute = minute;
+        this.time = time;
         this.remind = remind;
         this.duration = duration;
     }
@@ -36,12 +35,8 @@ public class Event {
         this.name = name;
     }
 
-    public int getHour() {
-        return hour;
-    }
-
-    public int getMinute() {
-        return minute;
+    public int getTime() {
+        return time;
     }
 
     public String getEventId() {

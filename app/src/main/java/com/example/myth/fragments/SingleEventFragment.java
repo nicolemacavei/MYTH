@@ -24,6 +24,7 @@ import com.example.myth.R;
 import com.example.myth.ReminderReceiver;
 import com.example.myth.activities.MainActivity;
 import com.example.myth.utilities.CalendarUtils;
+import com.example.myth.utilities.Constants;
 import com.google.android.material.slider.Slider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -99,15 +100,18 @@ public class SingleEventFragment extends Fragment {
         int remindBeforeNo = (int) remindBefore.getValue();
         int hour = eventHour.getValue();
         int minute = eventMinute.getValue();
+        int time;
+        time = hour * 100 + minute;
         String eventNameString = eventName.getText().toString();
         String eventDetailsString = eventDetails.getText().toString();
-        String uniqueID = hour + "_" + minute + "_" + eventNameString;
+        String uniqueID = time + "_" + eventNameString;
         String eventFormattedDate = CalendarUtils.formattedDate(CalendarUtils.selectedDate);
 
         Event newEvent = new Event(
-                uniqueID, eventNameString, eventDetailsString, eventFormattedDate, eventDurationNo, remindBeforeNo, hour, minute);
-        firebaseFirestore.collection("User").document(FirebaseAuth.getInstance().getUid())
-                .collection("Date").document(CalendarUtils.selectedDate.toString()).collection("Event").document(uniqueID).set(newEvent);
+                uniqueID, eventNameString, eventDetailsString, eventFormattedDate, eventDurationNo, remindBeforeNo, time);
+        firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS).document(FirebaseAuth.getInstance().getUid())
+                .collection(Constants.KEY_COLLECTION_DATE).document(CalendarUtils.selectedDate.toString())
+                .collection(Constants.KEY_COLLECTION_EVENT).document(uniqueID).set(newEvent);
 
         createNotificationChannel(uniqueID);
         setAlarm(hour, minute, CalendarUtils.selectedDate, remindBeforeNo);

@@ -39,7 +39,8 @@
                         android:hint="@string/name_of_the_event"
                         android:inputType="text"
                         android:padding="20dp"
-                        android:textColor="@color/midnightblue"/>
+                        android:textColor="@color/midnightblue"
+                        android:visibility="gone"/>
 
                     <Button
                         android:id="@+id/chooseConnectionBtn"
@@ -57,31 +58,63 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
                         android:textSize="20sp"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp"
+                        android:padding="20dp"
                         android:textColor="@color/midnightblue"
                         android:visibility="gone"/>
 
 
                     <TextView
+                        android:id="@+id/minimalDurationText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
-                        android:hint="Duration"
+                        android:hint="Minimal duration"
                         android:textSize="20sp"
                         android:paddingStart="20dp"
                         android:paddingEnd="0dp"
                         android:textColor="@color/midnightblue"/>
 
                     <com.google.android.material.slider.Slider
+                        android:id="@+id/durationSlideBar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingStart="20dp"
-                        android:id="@+id/durationSlideBar"
                         android:valueFrom="10"
                         android:valueTo="120"
                         android:value="30"
                         android:stepSize="10.0"/>
+
+                    <TextView
+                        android:id="@+id/suggestionMeetingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:hint="Date and Time we found: "
+                        android:textSize="20sp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="0dp"
+                        android:textColor="@color/midnightblue"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/suggestedDateText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:textSize="20sp"
+                        android:padding="20dp"
+                        android:textColor="@color/midnightblue"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/suggestedTimeText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:textSize="20sp"
+                        android:padding="20dp"
+                        android:textColor="@color/midnightblue"
+                        android:visibility="gone"/>
 
                     <EditText
                         android:id="@+id/detailsEventEditText"
@@ -92,7 +125,8 @@
                         android:hint="@string/details_new_event"
                         android:inputType="text"
                         android:paddingStart="20dp"
-                        android:paddingEnd="0dp"/>
+                        android:paddingEnd="0dp"
+                        android:visibility="gone"/>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/suggestTimingBtn"
@@ -102,8 +136,20 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
                         android:layout_marginBottom="20dp"
-                        android:text="@string/suggest_timing_btn"
+                        android:text="@string/search_timeslot_btn"
                         android:textColor="@color/midnightblue"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/requestTimingBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/suggest_timing_btn"
+                        android:textColor="@color/midnightblue"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

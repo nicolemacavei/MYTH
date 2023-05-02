@@ -20,8 +20,7 @@
         android:alpha="0.7"
         android:gravity="center"
         app:cardCornerRadius="20dp"
-        app:cardElevation="20dp"
-        app:cardBackgroundColor="@color/white">
+        app:cardElevation="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,7 +38,6 @@
                 android:hint="@string/name_of_the_event"
                 android:inputType="text"
                 android:paddingStart="20dp"
-                android:textColor="@color/midnightblue"
                 android:paddingEnd="0dp"/>
 
             <TextView
@@ -51,8 +49,8 @@
                 android:hint="Date"
                 android:textSize="20sp"
                 android:paddingStart="20dp"
-                android:textColor="@color/midnightblue"
-                android:paddingEnd="0dp"/>
+                android:paddingEnd="0dp"
+                android:textStyle="bold"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -132,8 +130,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="20dp"
-                android:text="@string/add_event_btn"
-                android:textColor="@color/midnightblue"/>
+                android:text="@string/add_event_btn"/>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

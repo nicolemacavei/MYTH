@@ -25,4 +25,12 @@ public class TimeSlot {
             return o1.getStartTime() - o2.getStartTime();
         }
     }
+
+    @Override
+    public String toString() {
+        //transform int to hour view
+        return startTime / 100 + ":" + startTime % 100
+                + " - "
+                + endTime / 100 + ":" + endTime % 100;
+    }
 }

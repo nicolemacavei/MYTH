@@ -2,11 +2,14 @@ package com.example.myth.fragments;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +22,9 @@ import android.widget.Toast;
 
 import com.example.myth.R;
 import com.example.myth.User;
+import com.example.myth.adapters.TimeSlotAdapter;
 import com.example.myth.findTimeSlots.TimeSlot;
+import com.example.myth.interfaces.RecyclerViewInterface;
 import com.example.myth.utilities.Constants;
 import com.example.myth.utilities.PreferenceManager;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,14 +36,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class MutualEventFragment extends Fragment implements ShowConnectionsFragment.OnInputSelected{
+public class MutualEventFragment extends Fragment implements ShowConnectionsFragment.OnInputSelected, RecyclerViewInterface {
 
+    private RecyclerView timeSlotsRecyclerView;
     EditText eventName, details;
     Button chooseConnectionBtn, suggestTimingBtn;
     private Slider eventDuration;
     FirebaseFirestore firebaseFirestore;
-    TextView userSelectedTextView, minimalDurationText, suggestText, suggestedDate, suggestedTime;
+    TextView userSelectedTextView, minimalDurationText, suggestText, suggestedDate, selectMeetingText;
     private User selectedUser;
+    private ArrayList<TimeSlot> availableHours = new ArrayList<>();
     private PreferenceManager preferenceManager;
 
     public MutualEventFragment() {
@@ -94,7 +101,8 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
         preferenceManager = new PreferenceManager(getActivity().getApplicationContext());
         suggestText = rootView.findViewById(R.id.suggestionMeetingText);
         suggestedDate = rootView.findViewById(R.id.suggestedDateText);
-        suggestedTime = rootView.findViewById(R.id.suggestedTimeText);
+        timeSlotsRecyclerView = rootView.findViewById(R.id.timeSlotsRecyclerView);
+        selectMeetingText = rootView.findViewById(R.id.selectHoursText);
     }
 
     @Override
@@ -144,7 +152,9 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
                                 ArrayList<TimeSlot> availableHours = new ArrayList<>();
                                 availableHours = findAvailableHours(minDuration, busyHours);
 
-                                showAvailableHours(availableHours, date);
+                                if(availableHours.size() > 0) {
+                                    showAvailableHours(availableHours, date);
+                                }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
@@ -160,7 +170,6 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
     }
 
     public ArrayList<TimeSlot> findAvailableHours(int minDuration, ArrayList<TimeSlot> busyHours){
-        ArrayList<TimeSlot> availableHours = new ArrayList<>();
         int startHour, endHour;
 
         //the minimum time of the free Time Slot of the users.
@@ -176,7 +185,6 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
                 TimeSlot newTimeSlot = new TimeSlot(minStart, startHour);
                 availableHours.add(newTimeSlot);
                 minStart = endHour;
-                Log.e(TAG, "TEST Time SLOT: " + newTimeSlot.getStartTime() + " " + newTimeSlot.getEndTime());
             } else if (minStart < endHour) {
                 minStart = endHour;
             }
@@ -185,7 +193,6 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
         if(minStart <= maxEnd - timeMeeting){
             TimeSlot newTimeSlot = new TimeSlot(minStart, maxEnd);
             availableHours.add(newTimeSlot);
-            Log.e(TAG, "TEST TIME SLOT: " + newTimeSlot.getStartTime() + " " + newTimeSlot.getEndTime());
         }
 
         return availableHours;
@@ -194,13 +201,24 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
     private void showAvailableHours(ArrayList<TimeSlot> availableHours, LocalDate date) {
         minimalDurationText.setVisibility(View.GONE);
         eventDuration.setVisibility(View.GONE);
+        suggestTimingBtn.setVisibility(View.GONE);
 
         suggestedDate.setText(date.toString());
-        String timeText = availableHours.get(0).getStartTime() + " - " + availableHours.get(0).getEndTime();
-        suggestedTime.setText(timeText);
-
-        suggestText.setVisibility(View.VISIBLE);
         suggestedDate.setVisibility(View.VISIBLE);
-        suggestedTime.setVisibility(View.VISIBLE);
+        suggestText.setVisibility(View.VISIBLE);
+        selectMeetingText.setVisibility(View.VISIBLE);
+
+        TimeSlotAdapter timeSlotAdapter = new TimeSlotAdapter(availableHours, this);
+        timeSlotsRecyclerView.setAdapter(timeSlotAdapter);
+        timeSlotsRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        //TimeSlot timeSlotSelected = availableHours.get(position);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.top_event_container, new MutualEventFinalStepFragment());
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

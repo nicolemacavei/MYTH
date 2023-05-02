@@ -22,31 +22,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         this.events = events;
     }
 
-//    @NonNull
-//    @Override
-//    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-//        Event event = getItem(position);
-//
-//        if(convertView == null)
-//            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_container_event, parent, false);
-//
-//        TextView eventName = convertView.findViewById(R.id.eventNameText);
-//        TextView eventHour = convertView.findViewById(R.id.eventHourText);
-//        TextView eventDuration = convertView.findViewById(R.id.eventDurationText);
-//        //TextView eventAvailabilityLine = convertView.findViewById(R.id.availabilityLine);
-//
-////        int hour = event.getHour();
-////        int minute = event.getMinute();
-////        String eventTitle =  hour + ":" + minute + " - " + event.getName();
-//
-//        String hour = event.getHour() + ":" + event.getMinute();
-//        eventName.setText(event.getName());
-//        eventDuration.setText(event.getDuration());
-//        eventHour.setText(hour);
-//
-//        return convertView;
-//    }
-
     @NonNull
     @Override
     public EventAdapter.EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

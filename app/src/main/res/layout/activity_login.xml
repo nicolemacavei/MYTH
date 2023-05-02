@@ -15,17 +15,25 @@
         android:fontFamily="sans-serif-light"
         android:gravity="center"
         android:text="M Y T H"
-        android:textColor="@color/midnightblue"
+        android:textColor="@color/black"
         android:textSize="30sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center"
+        android:text="my personal time calendar"
+        android:textColor="@color/black"
+        android:textSize="13sp" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_margin="25dp"
         android:alpha="0.6"
         app:cardCornerRadius="30dp"
-        app:cardElevation="20dp"
-        app:cardBackgroundColor="@color/white">
+        app:cardElevation="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,6 +49,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:hint="@string/email"
+                android:textSize="20dp"
                 android:inputType="textEmailAddress"
                 android:paddingStart="20dp"
                 android:paddingEnd="0dp"/>
@@ -52,6 +61,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:hint="@string/password"
+                android:textSize="20dp"
                 android:inputType="textPassword"
                 android:paddingStart="20dp"
                 android:paddingEnd="0dp"/>
@@ -60,21 +70,20 @@
                 android:id="@+id/resetPasswordPageBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="20dp"
                 android:text="@string/reset_password"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/midnightblue"
-                android:textStyle="bold" />
+                android:layout_marginTop="5dp"
+                android:textColor="@color/purple_500"
+                android:fontFamily="sans-serif-light"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/loginBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginEnd="20dp"
-                android:text="@string/login"
-                android:textColor="@color/midnightblue"/>
+                android:text="@string/login" />
 
 
             <LinearLayout
@@ -90,8 +99,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text="@string/register"
-                    android:textColor="@color/midnightblue"
-                    android:textStyle="bold" />
+                    android:textColor="@color/purple_500"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-light"/>
             </LinearLayout>
 
         </LinearLayout>

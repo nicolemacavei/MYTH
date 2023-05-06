@@ -2,7 +2,6 @@ package com.example.myth.fragments;
 
 import static android.content.ContentValues.TAG;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,14 +39,15 @@ import java.util.Collections;
 public class MutualEventFragment extends Fragment implements ShowConnectionsFragment.OnInputSelected, RecyclerViewInterface {
 
     private RecyclerView timeSlotsRecyclerView;
-    EditText eventName, details;
-    Button chooseConnectionBtn, suggestTimingBtn;
+    private EditText eventName, details;
+    private Button chooseConnectionBtn, suggestTimingBtn;
     private Slider eventDuration;
     FirebaseFirestore firebaseFirestore;
     TextView userSelectedTextView, minimalDurationText, suggestText, suggestedDate, selectMeetingText;
     private User selectedUser;
     private ArrayList<TimeSlot> availableHours = new ArrayList<>();
     private PreferenceManager preferenceManager;
+    private LocalDate dateFound;
 
     public MutualEventFragment() {
         // Required empty public constructor
@@ -78,7 +79,8 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
             public void onClick(View v) {
                 int duration = (int) eventDuration.getValue();
                 if(selectedUser != null) {
-                    getHours(preferenceManager.getString(Constants.KEY_USER_ID), selectedUser.getUserId(), LocalDate.now(), duration);
+                    dateFound = LocalDate.now();
+                    getHours(preferenceManager.getString(Constants.KEY_USER_ID), selectedUser.getUserId(), duration);
 
                 } else {
                     Toast.makeText(getActivity(), "Please select a connection", Toast.LENGTH_SHORT).show();
@@ -114,12 +116,12 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
         userSelectedTextView.setVisibility(View.VISIBLE);
     }
 
-    public void getHours(String userIdOne, String userIdTwo, LocalDate date, int minDuration){
+    public void getHours(String userIdOne, String userIdTwo, int minDuration){
 
         ArrayList<TimeSlot> busyHours = new ArrayList<>();
 
         firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS).document(userIdOne)
-                .collection(Constants.KEY_COLLECTION_DATE).document(date.toString())
+                .collection(Constants.KEY_COLLECTION_DATE).document(dateFound.toString())
                 .collection(Constants.KEY_COLLECTION_EVENT)
                 .orderBy(Constants.KEY_TIME).get()
                 .addOnSuccessListener(task -> {
@@ -133,7 +135,7 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
                         busyHours.add(timeSlot);
                     }
                     firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS).document(userIdTwo)
-                            .collection(Constants.KEY_COLLECTION_DATE).document(date.toString())
+                            .collection(Constants.KEY_COLLECTION_DATE).document(dateFound.toString())
                             .collection(Constants.KEY_COLLECTION_EVENT)
                             .orderBy(Constants.KEY_TIME).get()
                             .addOnSuccessListener(task2 -> {
@@ -153,7 +155,7 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
                                 availableHours = findAvailableHours(minDuration, busyHours);
 
                                 if(availableHours.size() > 0) {
-                                    showAvailableHours(availableHours, date);
+                                    showAvailableHours(availableHours, dateFound);
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -215,9 +217,20 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
 
     @Override
     public void onItemClick(int position) {
-        //TimeSlot timeSlotSelected = availableHours.get(position);
+        TimeSlot timeSlotSelected = availableHours.get(position);
+        String timeSlotString = timeSlotSelected.toString();
+        Bundle result = new Bundle();
+        result.putString("timeSlot", timeSlotString);
+        result.putString("userName", selectedUser.getFullName());
+        result.putParcelable("user", selectedUser);
+        result.putString("date", dateFound.toString());
+        result.putString("userId", selectedUser.getUserId());
+        result.putInt("startTime", timeSlotSelected.getStartTime());
+        result.putInt("duration", timeSlotSelected.getStartTime() - timeSlotSelected.getEndTime());
+        getParentFragmentManager().setFragmentResult("dataFromMutualEvent", result);
+
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.top_event_container, new MutualEventFinalStepFragment());
+        transaction.replace(R.id.top_event_container, new MutualEventRequestFragment());
         transaction.addToBackStack(null);
         transaction.commit();
     }

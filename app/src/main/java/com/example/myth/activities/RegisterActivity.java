@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.myth.R;
 import com.example.myth.User;
 import com.example.myth.databinding.ActivityRegisterBinding;
+import com.example.myth.utilities.Constants;
 import com.example.myth.utilities.PreferenceManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -82,7 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
                                             null
                                     );
                                     String userId = FirebaseAuth.getInstance().getUid();
-                                    firebaseFirestore.collection("User")
+                                    firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS)
                                             .document(userId).set(registeredUser);
                                     FirebaseUser user = auth.getCurrentUser();
                                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();

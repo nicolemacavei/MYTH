@@ -54,7 +54,14 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
         void setEventData(Event event){
             String time = String.valueOf(event.getTime());
-            String eventTime = time.substring(0, time.length()-2) + ":" + time.substring(time.length()-2);
+            String eventTime;
+            if(time.length() > 2) {
+                eventTime = time.substring(0, time.length() - 2) + ":" + time.substring(time.length() - 2);
+            } else if(time.length() > 1){
+                eventTime = "00:" + time.substring(time.length() - 2);
+            } else {
+                eventTime = "00:0" + time.substring(time.length() - 1);
+            }
             String durationText = event.getDuration() + " minutes";
             binding.eventNameText.setText(event.getName());
             binding.eventDurationText.setText(durationText);

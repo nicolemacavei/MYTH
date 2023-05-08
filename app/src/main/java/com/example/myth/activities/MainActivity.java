@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.myth.fragments.CalendarFragment;
+import com.example.myth.fragments.EventRequestsFragment;
 import com.example.myth.fragments.NotificationsFragment;
 import com.example.myth.R;
 import com.example.myth.fragments.TodaysEventsFragment;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.bottom_chat:
-                        fragment = new NotificationsFragment();
+                        fragment = new EventRequestsFragment();
                         break;
 
                     case R.id.bottom_meeting:

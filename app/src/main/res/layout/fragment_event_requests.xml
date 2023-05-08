@@ -5,19 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.NotificationsFragment"
-    android:background="@color/purple_100"
-    android:animateLayoutChanges="true"
+    tools:context=".fragments.EventRequestsFragment"
+    android:animateLayoutChanges="false"
     android:padding="5dp">
 
-    <Button
-        android:id="@+id/addConnectionBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="add Connection"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
     <TextView
         android:id="@+id/notificationText"
         android:layout_width="wrap_content"
@@ -27,20 +18,21 @@
         android:textSize="25dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/addConnectionBtn"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notificationRecyclerView"
+        android:id="@+id/eventNotificationRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
         android:overScrollMode="never"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@+id/addConnectionBtn"
+        app:layout_constraintTop_toBottomOf="@+id/notificationText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

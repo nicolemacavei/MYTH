@@ -138,7 +138,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
                 int remindBefore = queryDocSn.getLong(Constants.KEY_EVENT_REMIND).intValue();
                 int time = queryDocSn.getLong(Constants.KEY_TIME).intValue();
 
-                Event event = new Event(eventId, name, details, dateFormatted, duration, remindBefore, time);
+                Event event = new Event(name, details, dateFormatted, duration, remindBefore, time);
                 events.add(event);
             }
             if(events.size() > 0) {

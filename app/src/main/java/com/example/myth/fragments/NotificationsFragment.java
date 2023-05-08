@@ -1,5 +1,7 @@
 package com.example.myth.fragments;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,32 +68,50 @@ public class NotificationsFragment extends Fragment {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         String currentUserId = preferenceManager.getString(Constants.KEY_USER_ID);
 
-        database.collection(Constants.KEY_COLLECTION_USERS).document(currentUserId)
+        database.collection(Constants.KEY_COLLECTION_NOTIFICATION).document(currentUserId)
                 .collection(Constants.KEY_COLLECTION_REQUEST).get()
                 .addOnCompleteListener(task -> {
 
                     if(task.isSuccessful() && task.getResult() != null){
                         List<User> users = new ArrayList<>();
+                        List<String> userIds = new ArrayList<>();
+
                         for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
+
                             String userId = queryDocumentSnapshot.getString(Constants.KEY_USER_ID);
-                            String email = queryDocumentSnapshot.getString(Constants.KEY_EMAIL);
-                            String name = queryDocumentSnapshot.getString(Constants.KEY_NAME);
-                            String image = queryDocumentSnapshot.getString(Constants.KEY_IMAGE);
-                            String token = queryDocumentSnapshot.getString(Constants.KEY_FCM_TOKEN);
-                            User user = new User(
-                                    userId,
-                                    email,
-                                    name,
-                                    image,
-                                    token
-                            );
-                            users.add(user);
+                            userIds.add(userId);
                         }
-                        if(users.size() > 0){
-                            NotificationAdapter notificationAdapter = new NotificationAdapter(users, currentUserId);
-                            notificationRecyclerView.setAdapter(notificationAdapter);
-                            notificationRecyclerView.setVisibility(View.VISIBLE);
-                        }
+                        database.collection(Constants.KEY_COLLECTION_USERS).get()
+                                .addOnCompleteListener( task1 -> {
+                                    if(task1.isSuccessful() && task1.getResult() != null){
+
+                                        for (QueryDocumentSnapshot queryDocumentSnapshot: task1.getResult()){
+                                            String userId = queryDocumentSnapshot.getString(Constants.KEY_USER_ID);
+                                            if(userIds.contains(userId)){
+
+                                                String email = queryDocumentSnapshot.getString(Constants.KEY_EMAIL);
+                                                String name = queryDocumentSnapshot.getString(Constants.KEY_NAME);
+                                                String image = queryDocumentSnapshot.getString(Constants.KEY_IMAGE);
+                                                String token = queryDocumentSnapshot.getString(Constants.KEY_FCM_TOKEN);
+
+                                                User user = new User(
+                                                        userId,
+                                                        email,
+                                                        name,
+                                                        image,
+                                                        token
+                                                );
+                                                users.add(user);
+                                            }
+                                        }
+                                    }
+                                    if(users.size() > 0){
+                                        NotificationAdapter notificationAdapter = new NotificationAdapter(users, currentUserId);
+                                        notificationRecyclerView.setAdapter(notificationAdapter);
+                                        notificationRecyclerView.setVisibility(View.VISIBLE);
+                                    }
+
+                                });
                     }
                 });
     }

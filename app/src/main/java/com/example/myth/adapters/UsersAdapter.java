@@ -1,8 +1,11 @@
 package com.example.myth.adapters;
 
+import static android.content.ContentValues.TAG;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myth.Notification;
 import com.example.myth.User;
 
 import com.example.myth.databinding.ItemContainerUserBinding;
@@ -20,19 +24,19 @@ import com.example.myth.utilities.Constants;
 import com.example.myth.utilities.PreferenceManager;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder>{
 
     private final RecyclerViewInterface recyclerViewInterface;
     private final List<User> users;
-    private final String currentUID;
     private final boolean connected;
     private PreferenceManager preferenceManager;
 
-    public UsersAdapter(List<User> users, String currentUID, boolean connected, RecyclerViewInterface recyclerViewInterface) {
+    public UsersAdapter(List<User> users, boolean connected, RecyclerViewInterface recyclerViewInterface) {
         this.users = users;
-        this.currentUID = currentUID;
         this.connected = connected;
         this.recyclerViewInterface = recyclerViewInterface;
     }
@@ -93,15 +97,12 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
                 @Override
                 public void onClick(View v) {
                     FirebaseFirestore database = FirebaseFirestore.getInstance();
-                    User currentUser = new User(
-                            preferenceManager.getString(Constants.KEY_USER_ID),
-                            preferenceManager.getString(Constants.KEY_EMAIL),
-                            preferenceManager.getString(Constants.KEY_NAME),
-                            preferenceManager.getString(Constants.KEY_IMAGE),
-                            preferenceManager.getString(Constants.KEY_FCM_TOKEN)
-                    );
-                    database.collection(Constants.KEY_COLLECTION_USERS).document(user.getUserId())
-                            .collection(Constants.KEY_COLLECTION_REQUEST).document(currentUID).set(currentUser);
+
+                    Notification notification = new Notification(LocalDate.now().toString(),
+                            preferenceManager.getString(Constants.KEY_USER_ID), null);
+                    database.collection(Constants.KEY_COLLECTION_NOTIFICATION).document(user.getUserId())
+                            .collection(Constants.KEY_COLLECTION_REQUEST).document(preferenceManager.getString(Constants.KEY_USER_ID)).set(notification);
+
                     FCMSend.pushNotification(
                             itemView.getContext(),
                             user.token,

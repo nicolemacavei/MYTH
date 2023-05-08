@@ -26,6 +26,7 @@ public class ConnectionsListFragment extends DialogFragment implements RecyclerV
 
     private PreferenceManager preferenceManager;
     private RecyclerView usersRecyclerView;
+    private List<String> userIds = new ArrayList<>();
 
 //    @Override
 //    public void onCreate(Bundle savedInstanceState) {
@@ -55,30 +56,47 @@ public class ConnectionsListFragment extends DialogFragment implements RecyclerV
         database.collection(Constants.KEY_COLLECTION_USERS).document(preferenceManager.getString(Constants.KEY_USER_ID))
                 .collection(Constants.KEY_COLLECTION_CONNECTION).get()
                 .addOnCompleteListener(task -> {
-                    String currentUserId = preferenceManager.getString(Constants.KEY_USER_ID);
+
                     if(task.isSuccessful() && task.getResult() != null){
                         List<User> users = new ArrayList<>();
+                        userIds.clear();
                         for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
 
                             String userId = queryDocumentSnapshot.getString(Constants.KEY_USER_ID);
-                            String email = queryDocumentSnapshot.getString(Constants.KEY_EMAIL);
-                            String name = queryDocumentSnapshot.getString(Constants.KEY_NAME);
-                            String image = queryDocumentSnapshot.getString(Constants.KEY_IMAGE);
-                            String token = queryDocumentSnapshot.getString(Constants.KEY_FCM_TOKEN);
-                            User user = new User(
-                                    userId,
-                                    email,
-                                    name,
-                                    image,
-                                    token
-                            );
-                            users.add(user);
+                            userIds.add(userId);
+
                         }
-                        if(users.size() > 0){
-                            UsersAdapter usersAdapter = new UsersAdapter(users, currentUserId, true, this);
-                            usersRecyclerView.setAdapter(usersAdapter);
-                            usersRecyclerView.setVisibility(View.VISIBLE);
-                        }
+                        database.collection(Constants.KEY_COLLECTION_USERS).get()
+                                .addOnCompleteListener( task1 -> {
+                                    if(task.isSuccessful() && task.getResult() != null){
+
+                                        for (QueryDocumentSnapshot queryDocumentSnapshot: task1.getResult()){
+                                            String userId = queryDocumentSnapshot.getString(Constants.KEY_USER_ID);
+                                            if(userIds.contains(userId)){
+
+                                                String email = queryDocumentSnapshot.getString(Constants.KEY_EMAIL);
+                                                String name = queryDocumentSnapshot.getString(Constants.KEY_NAME);
+                                                String image = queryDocumentSnapshot.getString(Constants.KEY_IMAGE);
+                                                String token = queryDocumentSnapshot.getString(Constants.KEY_FCM_TOKEN);
+                                                User user = new User(
+                                                        userId,
+                                                        email,
+                                                        name,
+                                                        image,
+                                                        token
+                                                );
+                                                users.add(user);
+                                            }
+                                        }
+
+                                    }
+                                    if(users.size() > 0){
+                                        UsersAdapter usersAdapter = new UsersAdapter(users,true, this);
+                                        usersRecyclerView.setAdapter(usersAdapter);
+                                        usersRecyclerView.setVisibility(View.VISIBLE);
+                                    }
+
+                                });
                     }
                 });
     }

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10sp">
+
+    <TextView
+        android:id="@+id/textRequest"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/purple_500"
+        android:textSize="12sp"
+        android:text="new Event Request from "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/textName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="12sp"
+        android:text="Full Name"
+        app:layout_constraintStart_toEndOf="@+id/textRequest"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/eventTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="20sp"
+        android:text="14:00 - 16:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textRequest"/>
+
+    <TextView
+        android:id="@+id/eventName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="20sp"
+        android:text="Meeting Name"
+        app:layout_constraintStart_toEndOf="@+id/eventTime"
+        app:layout_constraintTop_toBottomOf="@+id/textRequest"/>
+
+    <TextView
+        android:id="@+id/eventInformationDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/purple_500"
+        android:textSize="12sp"
+        android:text="date of the event: "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventTime"/>
+
+    <TextView
+        android:id="@+id/eventDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/purple_500"
+        android:textSize="12sp"
+        android:text="2023-05-12"
+        app:layout_constraintStart_toEndOf="@+id/eventInformationDate"
+        app:layout_constraintTop_toBottomOf="@+id/eventTime"/>
+
+    <Button
+        android:id="@+id/acceptEventBtn"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@android:color/transparent"
+        android:drawableEnd="@drawable/ic_accept_connection"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

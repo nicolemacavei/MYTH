@@ -31,6 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.UUID;
 
 public class SingleEventFragment extends Fragment {
 
@@ -104,11 +105,10 @@ public class SingleEventFragment extends Fragment {
         time = hour * 100 + minute;
         String eventNameString = eventName.getText().toString();
         String eventDetailsString = eventDetails.getText().toString();
-        String uniqueID = time + "_" + eventNameString;
+        String uniqueID = UUID.randomUUID().toString();
         String eventFormattedDate = CalendarUtils.formattedDate(CalendarUtils.selectedDate);
 
-        Event newEvent = new Event(
-                uniqueID, eventNameString, eventDetailsString, eventFormattedDate, eventDurationNo, remindBeforeNo, time);
+        Event newEvent = new Event(eventNameString, eventDetailsString, eventFormattedDate, eventDurationNo, remindBeforeNo, time);
         firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS).document(FirebaseAuth.getInstance().getUid())
                 .collection(Constants.KEY_COLLECTION_DATE).document(CalendarUtils.selectedDate.toString())
                 .collection(Constants.KEY_COLLECTION_EVENT).document(uniqueID).set(newEvent);

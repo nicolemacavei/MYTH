@@ -1,23 +1,20 @@
 package com.example.myth;
 
+import java.time.LocalDate;
+
 public class Notification {
 
-    private String type;
-    private User user;
+    private String userId, date;
     private Event event;
 
-    public Notification(String type, User user, Event event) {
-        this.type = type;
-        this.user = user;
+    public Notification(String date, String userId, Event event) {
+        this.date = date;
+        this.userId = userId;
         this.event = event;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public User getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
     public Event getEvent() {

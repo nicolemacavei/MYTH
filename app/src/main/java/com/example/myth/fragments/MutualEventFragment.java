@@ -109,7 +109,6 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
 
     @Override
     public void sendInput(User userSelected) {
-        Log.e(TAG, "sendInput: " + userSelected.getFullName());
         chooseConnectionBtn.setVisibility(View.GONE);
         selectedUser = userSelected;
         userSelectedTextView.setText(userSelected.getFullName());
@@ -173,6 +172,7 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
 
     public ArrayList<TimeSlot> findAvailableHours(int minDuration, ArrayList<TimeSlot> busyHours){
         int startHour, endHour;
+        availableHours.clear();
 
         //the minimum time of the free Time Slot of the users.
         int timeMeeting = 100 * (minDuration / 60) + minDuration % 60;
@@ -218,15 +218,11 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
     @Override
     public void onItemClick(int position) {
         TimeSlot timeSlotSelected = availableHours.get(position);
-        String timeSlotString = timeSlotSelected.toString();
+        //String timeSlotString = timeSlotSelected.toString();
         Bundle result = new Bundle();
-        result.putString("timeSlot", timeSlotString);
-        result.putString("userName", selectedUser.getFullName());
+        result.putParcelable("timeSlot", timeSlotSelected);
         result.putParcelable("user", selectedUser);
         result.putString("date", dateFound.toString());
-        result.putString("userId", selectedUser.getUserId());
-        result.putInt("startTime", timeSlotSelected.getStartTime());
-        result.putInt("duration", timeSlotSelected.getStartTime() - timeSlotSelected.getEndTime());
         getParentFragmentManager().setFragmentResult("dataFromMutualEvent", result);
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();

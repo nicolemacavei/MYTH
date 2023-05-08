@@ -78,7 +78,7 @@ public class TodaysEventsFragment extends Fragment {
                 int remindBefore = queryDocSn.getLong(Constants.KEY_EVENT_REMIND).intValue();
                 int time = queryDocSn.getLong(Constants.KEY_TIME).intValue();
 
-                Event event = new Event(eventId, name, details, null, duration, remindBefore, time);
+                Event event = new Event(name, details, null, duration, remindBefore, time);
                 events.add(event);
             }
             if(events.size() > 0) {

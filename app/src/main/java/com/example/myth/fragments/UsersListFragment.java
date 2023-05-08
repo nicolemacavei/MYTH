@@ -49,7 +49,6 @@ public class UsersListFragment extends Fragment {
     private void initWidgets(View rootView) {
         preferenceManager = new PreferenceManager(getActivity().getApplicationContext());
         usersRecyclerView = rootView.findViewById(R.id.usersRecyclerView);
-//        addUserBtn = rootView.findViewById(R.id.addUserBtn);
     }
 
     private void getUsers(){
@@ -78,7 +77,7 @@ public class UsersListFragment extends Fragment {
                             users.add(user);
                         }
                         if(users.size() > 0){
-                            UsersAdapter usersAdapter = new UsersAdapter(users, currentUserId, false, null);
+                            UsersAdapter usersAdapter = new UsersAdapter(users,false, null);
                             usersRecyclerView.setAdapter(usersAdapter);
                             usersRecyclerView.setVisibility(View.VISIBLE);
                         }

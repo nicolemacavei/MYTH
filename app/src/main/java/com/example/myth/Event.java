@@ -9,8 +9,7 @@ public class Event {
     private String name, details, date, eventId;
     private int time, duration, remind;
 
-    public Event(String eventId, String name, String details, String date, int duration, int remind, int time) {
-        this.eventId = eventId;
+    public Event(String name, String details, String date, int duration, int remind, int time) {
         this.name = name;
         this.details = details;
         this.date = date;

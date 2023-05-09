@@ -65,10 +65,18 @@ public class MutualEventRequestFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(!eventName.getText().toString().trim().isEmpty()){
-                    addNotification();
+                    int startTime = eventStartHour.getValue() * 100 + eventStartMinute.getValue();
+                    int endTime = eventEndHour.getValue() * 100 + eventEndMinute.getValue();
+                    TimeSlot eventTimeSlot = new TimeSlot(startTime, endTime);
 
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    getActivity().startActivity(intent);
+                    if(eventTimeSlot.startLessThanEndTime()) {
+                        addNotification(eventTimeSlot);
+
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        getActivity().startActivity(intent);
+                    } else {
+                        Toast.makeText(getActivity(), "start time needs to be sooner than end time", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     eventName.setError("Name is mandatory");
                 }
@@ -78,29 +86,26 @@ public class MutualEventRequestFragment extends Fragment {
         return rootView;
     }
 
-    private void addNotification() {
+    private void addNotification(TimeSlot eventTimeSlot) {
 
-        Event newEvent = new Event(eventName.getText().toString(), eventDetails.getText().toString(),
-                date, timeSlot.getEndTime()- timeSlot.getStartTime(), 15, timeSlot.getStartTime());
-//        Notification notification = new Notification(LocalDate.now().toString(),
-//                preferenceManager.getString(Constants.KEY_USER_ID), newEvent);
         String uniqueID = UUID.randomUUID().toString();
+        Event newEvent = new Event(uniqueID, eventName.getText().toString(), eventDetails.getText().toString(),
+                date, eventTimeSlot.getEndTime(), 15, eventTimeSlot.getStartTime());
 
-        firebaseFirestore.collection(Constants.KEY_COLLECTION_NOTIFICATION).document(user.getUserId())
-                .collection(Constants.KEY_COLLECTION_EVENT).document(uniqueID).set(newEvent);
-        firebaseFirestore.collection(Constants.KEY_COLLECTION_NOTIFICATION).document(user.getUserId())
-                .collection(Constants.KEY_COLLECTION_EVENT).document(uniqueID)
-                .update(Constants.KEY_NAME, preferenceManager.getString(Constants.KEY_NAME),
-                        Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
+            firebaseFirestore.collection(Constants.KEY_COLLECTION_NOTIFICATION).document(user.getUserId())
+                    .collection(Constants.KEY_COLLECTION_EVENT).document(uniqueID).set(newEvent);
+            firebaseFirestore.collection(Constants.KEY_COLLECTION_NOTIFICATION).document(user.getUserId())
+                    .collection(Constants.KEY_COLLECTION_EVENT).document(uniqueID)
+                    .update(Constants.KEY_NAME, preferenceManager.getString(Constants.KEY_NAME),
+                            Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
 
-        FCMSend.pushNotification(
-                getContext(),
-                user.token,
-                "New Event Request",
-                "From " + preferenceManager.getString(Constants.KEY_NAME)
-        );
-
-        Toast.makeText(getActivity(), "request sent", Toast.LENGTH_SHORT).show();
+            FCMSend.pushNotification(
+                    getContext(),
+                    user.token,
+                    "Event Request from " + preferenceManager.getString(Constants.KEY_NAME),
+                    "on " + date
+            );
+            Toast.makeText(getActivity(), "request sent", Toast.LENGTH_SHORT).show();
     }
 
     private void initWidgets(View rootView) {

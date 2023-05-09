@@ -3,6 +3,8 @@ package com.example.myth.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.List;
+
 public class PreferenceManager {
 
     private final SharedPreferences sharedPreferences;

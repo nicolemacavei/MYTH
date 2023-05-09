@@ -83,6 +83,12 @@ public class TimeSlot implements Parcelable {
         }
     }
 
+    public boolean startLessThanEndTime(){
+        if(startTime <= endTime)
+            return true;
+        return false;
+    }
+
     @Override
     public String toString() {
         //transform int to hour view

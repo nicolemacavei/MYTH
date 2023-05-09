@@ -5,12 +5,15 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.myth.Event;
 import com.example.myth.Notification;
@@ -33,6 +36,8 @@ public class EventRequestsFragment extends Fragment {
 
     private PreferenceManager preferenceManager;
     private RecyclerView eventNotificationRecyclerView;
+    private TextView clickConnectionList;
+    private Button addConnectionBtn;
 
     public EventRequestsFragment() {
         // Required empty public constructor
@@ -49,6 +54,24 @@ public class EventRequestsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_event_requests, container, false);
         initWidgets(rootView);
         getEventNotifications();
+        addConnectionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.body_container, new UsersListFragment() );
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+        clickConnectionList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.body_container, new NotificationsFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
         return rootView;
     }
@@ -56,6 +79,8 @@ public class EventRequestsFragment extends Fragment {
     private void initWidgets(View rootView) {
         preferenceManager = new PreferenceManager(getActivity().getApplicationContext());
         eventNotificationRecyclerView = rootView.findViewById(R.id.eventNotificationRecyclerView);
+        addConnectionBtn = rootView.findViewById(R.id.addConnectionBtn);
+        clickConnectionList = rootView.findViewById(R.id.connectionRequestsText);
     }
 
     private void getEventNotifications(){
@@ -67,30 +92,33 @@ public class EventRequestsFragment extends Fragment {
                 .addOnCompleteListener(task -> {
 
                     List<Event> events = new ArrayList<>();
-                    String userName = "UserName";
+                    String userName = "", userId = "";
                     if(task.isSuccessful() && task.getResult() != null){
 
                         for(QueryDocumentSnapshot document : task.getResult()){
-//
+
                             userName = document.getString(Constants.KEY_NAME);
+                            userId = document.getString(Constants.KEY_USER_ID);
                             String eventDate = document.getString(Constants.KEY_EVENT_DATE);
-                            int eventTime = document.getLong(Constants.KEY_TIME).intValue();
-                            int eventDuration = document.getLong(Constants.KEY_EVENT_DURATION).intValue();
+                            int startTime = document.getLong(Constants.KEY_EVENT_STARTTIME).intValue();
+                            int endTime = document.getLong(Constants.KEY_EVENT_ENDTIME).intValue();
                             String eventName = document.getString(Constants.KEY_EVENT_NAME);
+                            String eventId = document.getString(Constants.KEY_EVENT_ID);
 
                             Event event = new Event(
+                                    eventId,
                                     eventName,
                                     null,
                                     eventDate,
-                                    eventDuration,
+                                    endTime,
                                     0,
-                                    eventTime
+                                    startTime
                             );
                             events.add(event);
                         }
                     }
                     if(events.size() > 0 ){
-                        EventRequestAdapter eventRequestAdapter = new EventRequestAdapter(events, userName);
+                        EventRequestAdapter eventRequestAdapter = new EventRequestAdapter(events, userName, userId);
                         eventNotificationRecyclerView.setAdapter(eventRequestAdapter);
                         eventNotificationRecyclerView.setVisibility(View.VISIBLE);
                     }

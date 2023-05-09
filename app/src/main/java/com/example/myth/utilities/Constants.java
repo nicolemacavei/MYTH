@@ -8,11 +8,12 @@ public class Constants {
     public static final String KEY_EVENT_DATE = "date";
     public static final String KEY_COLLECTION_CONNECTION = "Connection";
     public static final String KEY_COLLECTION_REQUEST = "Request";
-    public static final String KEY_TIME = "time";
+    public static final String KEY_EVENT_STARTTIME = "startTime";
     public static final String KEY_EVENT_NAME = "name";
-    public static final String KEY_EVENT_DURATION = "duration";
+    public static final String KEY_EVENT_ENDTIME = "endTime";
     public static final String KEY_EVENT_DETAILS = "details";
     public static final String KEY_EVENT_REMIND = "remind";
+    public static final String KEY_EVENT_ID = "eventId";
 
     public static final String KEY_NAME = "fullName";
     public static final String KEY_EMAIL = "email";

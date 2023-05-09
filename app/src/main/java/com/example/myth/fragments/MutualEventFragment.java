@@ -43,11 +43,11 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
     private Button chooseConnectionBtn, suggestTimingBtn;
     private Slider eventDuration;
     FirebaseFirestore firebaseFirestore;
-    TextView userSelectedTextView, minimalDurationText, suggestText, suggestedDate, selectMeetingText;
+    TextView userSelectedTextView, minimalDurationText, suggestText, suggestedDate, selectMeetingText, busyFriendText, noHoursText;
     private User selectedUser;
     private ArrayList<TimeSlot> availableHours = new ArrayList<>();
     private PreferenceManager preferenceManager;
-    private LocalDate dateFound;
+    private LocalDate dateFound = LocalDate.now();
 
     public MutualEventFragment() {
         // Required empty public constructor
@@ -77,11 +77,11 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
         suggestTimingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int duration = (int) eventDuration.getValue();
+                //int duration = (int) eventDuration.getValue();
                 if(selectedUser != null) {
-                    dateFound = LocalDate.now();
-                    getHours(preferenceManager.getString(Constants.KEY_USER_ID), selectedUser.getUserId(), duration);
-
+                    //int daysAdded = 0;
+                    LocalDate date = dateFound;
+                    getHours(preferenceManager.getString(Constants.KEY_USER_ID), selectedUser.getUserId(), (int) eventDuration.getValue(), date);
                 } else {
                     Toast.makeText(getActivity(), "Please select a connection", Toast.LENGTH_SHORT).show();
                 }
@@ -105,6 +105,8 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
         suggestedDate = rootView.findViewById(R.id.suggestedDateText);
         timeSlotsRecyclerView = rootView.findViewById(R.id.timeSlotsRecyclerView);
         selectMeetingText = rootView.findViewById(R.id.selectHoursText);
+        busyFriendText = rootView.findViewById(R.id.busyFriendText);
+        noHoursText = rootView.findViewById(R.id.noHoursText);
     }
 
     @Override
@@ -115,35 +117,38 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
         userSelectedTextView.setVisibility(View.VISIBLE);
     }
 
-    public void getHours(String userIdOne, String userIdTwo, int minDuration){
+    public void getHours(String userIdOne, String userIdTwo, int minDuration, LocalDate date){
 
+        if(dateFound.plusDays(31) == date ){
+            busyFriendText.setVisibility(View.VISIBLE);
+            noHoursText.setVisibility(View.VISIBLE);
+            return;
+        }
         ArrayList<TimeSlot> busyHours = new ArrayList<>();
 
         firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS).document(userIdOne)
-                .collection(Constants.KEY_COLLECTION_DATE).document(dateFound.toString())
+                .collection(Constants.KEY_COLLECTION_DATE).document(date.toString())
                 .collection(Constants.KEY_COLLECTION_EVENT)
-                .orderBy(Constants.KEY_TIME).get()
+                .orderBy(Constants.KEY_EVENT_STARTTIME).get()
                 .addOnSuccessListener(task -> {
                     for(QueryDocumentSnapshot queryDocSn : task){
 
-                        int duration = queryDocSn.getLong(Constants.KEY_EVENT_DURATION).intValue();
-                        int startTime = queryDocSn.getLong(Constants.KEY_TIME).intValue();
-                        int endTime = startTime +  100 * (duration / 60) + duration % 60;
+                        int endTime = queryDocSn.getLong(Constants.KEY_EVENT_ENDTIME).intValue();
+                        int startTime = queryDocSn.getLong(Constants.KEY_EVENT_STARTTIME).intValue();
 
                         TimeSlot timeSlot = new TimeSlot(startTime, endTime);
                         busyHours.add(timeSlot);
                     }
                     firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS).document(userIdTwo)
-                            .collection(Constants.KEY_COLLECTION_DATE).document(dateFound.toString())
+                            .collection(Constants.KEY_COLLECTION_DATE).document(date.toString())
                             .collection(Constants.KEY_COLLECTION_EVENT)
-                            .orderBy(Constants.KEY_TIME).get()
+                            .orderBy(Constants.KEY_EVENT_STARTTIME).get()
                             .addOnSuccessListener(task2 -> {
 
                                 for(QueryDocumentSnapshot queryDocSn : task2){
 
-                                    int duration = queryDocSn.getLong(Constants.KEY_EVENT_DURATION).intValue();
-                                    int startTime = queryDocSn.getLong(Constants.KEY_TIME).intValue();
-                                    int endTime = startTime + 100 * (duration / 60) + duration % 60;
+                                    int endTime = queryDocSn.getLong(Constants.KEY_EVENT_ENDTIME).intValue();
+                                    int startTime = queryDocSn.getLong(Constants.KEY_EVENT_STARTTIME).intValue();
 
                                     TimeSlot timeSlot = new TimeSlot(startTime, endTime);
                                     busyHours.add(timeSlot);
@@ -153,8 +158,12 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
                                 ArrayList<TimeSlot> availableHours = new ArrayList<>();
                                 availableHours = findAvailableHours(minDuration, busyHours);
 
+                                Log.e(TAG, "Available hours: " + availableHours.size() + " date is: " + date);
                                 if(availableHours.size() > 0) {
-                                    showAvailableHours(availableHours, dateFound);
+                                    showAvailableHours(availableHours, date);
+                                } else {
+                                    Log.e(TAG, "Busy hours: " + busyHours.size() + " date is: " + date);
+                                    getHours(preferenceManager.getString(Constants.KEY_USER_ID), selectedUser.getUserId(), (int)eventDuration.getValue(), date.plusDays(1));
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -165,7 +174,7 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "something went wrong " + e, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -209,6 +218,7 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
         suggestedDate.setVisibility(View.VISIBLE);
         suggestText.setVisibility(View.VISIBLE);
         selectMeetingText.setVisibility(View.VISIBLE);
+        dateFound = date;
 
         TimeSlotAdapter timeSlotAdapter = new TimeSlotAdapter(availableHours, this);
         timeSlotsRecyclerView.setAdapter(timeSlotAdapter);
@@ -218,7 +228,6 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
     @Override
     public void onItemClick(int position) {
         TimeSlot timeSlotSelected = availableHours.get(position);
-        //String timeSlotString = timeSlotSelected.toString();
         Bundle result = new Bundle();
         result.putParcelable("timeSlot", timeSlotSelected);
         result.putParcelable("user", selectedUser);

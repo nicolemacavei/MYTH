@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myth.Connection;
 import com.example.myth.Notification;
 import com.example.myth.User;
 

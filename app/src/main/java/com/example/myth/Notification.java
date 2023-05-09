@@ -13,6 +13,10 @@ public class Notification {
         this.event = event;
     }
 
+    public String getDate() {
+        return date;
+    }
+
     public String getUserId() {
         return userId;
     }

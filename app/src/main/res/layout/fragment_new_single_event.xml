@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/purple_200">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -48,7 +49,7 @@
                 android:layout_marginEnd="20dp"
                 android:hint="Date"
                 android:textSize="20sp"
-                android:paddingStart="20dp"
+                android:paddingStart="10dp"
                 android:paddingEnd="0dp"
                 android:textStyle="bold"/>
 
@@ -56,39 +57,57 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:orientation="horizontal"
-                android:paddingStart="20dp"
+                android:paddingStart="10dp"
                 android:paddingEnd="0dp">
 
                 <NumberPicker
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/eventTimeHour"
-                    android:layout_marginEnd="20dp"/>
+                    android:id="@+id/eventStartTimeHour"
+                    android:layout_marginEnd="5dp"/>
                 <NumberPicker
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/eventTimeMin"/>
+                    android:layout_marginEnd="10dp"
+                    android:id="@+id/eventStartTimeMin"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="to"
+                    android:layout_gravity="center"/>
+
+                <NumberPicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/eventEndTimeHour"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="10dp"/>
+                <NumberPicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/eventEndTimeMin"/>
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:hint="Duration"
-                android:textSize="20sp"
-                android:paddingStart="20dp"
-                android:paddingEnd="0dp"
-                android:textColor="@color/midnightblue"/>
-            <com.google.android.material.slider.Slider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="20dp"
-                android:id="@+id/durationSlideBar"
-                android:valueFrom="10"
-                android:valueTo="120"
-                android:value="30"
-                android:stepSize="10.0"/>
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="20dp"-->
+<!--                android:hint="Duration"-->
+<!--                android:textSize="20sp"-->
+<!--                android:paddingStart="20dp"-->
+<!--                android:paddingEnd="0dp"-->
+<!--                android:textColor="@color/midnightblue"/>-->
+<!--            <com.google.android.material.slider.Slider-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingStart="20dp"-->
+<!--                android:id="@+id/durationSlideBar"-->
+<!--                android:valueFrom="10"-->
+<!--                android:valueTo="120"-->
+<!--                android:value="30"-->
+<!--                android:stepSize="10.0"/>-->
 
             <TextView
                 android:layout_width="match_parent"
@@ -97,14 +116,14 @@
                 android:layout_marginTop="10dp"
                 android:hint="Remind me before"
                 android:textSize="20sp"
-                android:paddingStart="20dp"
+                android:paddingStart="10dp"
                 android:paddingEnd="0dp"
                 android:textColor="@color/midnightblue"/>
 
             <com.google.android.material.slider.Slider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="20dp"
+                android:paddingStart="10dp"
                 android:id="@+id/remindBeforeSlideBar"
                 android:valueFrom="0"
                 android:valueTo="60"

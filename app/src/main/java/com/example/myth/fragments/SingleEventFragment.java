@@ -18,11 +18,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myth.Event;
 import com.example.myth.R;
 import com.example.myth.ReminderReceiver;
 import com.example.myth.activities.MainActivity;
+import com.example.myth.findTimeSlots.TimeSlot;
 import com.example.myth.utilities.CalendarUtils;
 import com.example.myth.utilities.Constants;
 import com.google.android.material.slider.Slider;
@@ -39,8 +41,8 @@ public class SingleEventFragment extends Fragment {
     private TextView eventDate;
     private Button addEventBtn;
     private FirebaseFirestore firebaseFirestore;
-    private NumberPicker eventHour, eventMinute;
-    private Slider eventDuration, remindBefore;
+    private NumberPicker eventStartHour, eventStartMinute, eventEndHour, eventEndMinute;
+    private Slider remindBefore;
 
     private Calendar calendar;
     private AlarmManager alarmManager;
@@ -48,7 +50,6 @@ public class SingleEventFragment extends Fragment {
     public SingleEventFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,9 +69,17 @@ public class SingleEventFragment extends Fragment {
                     eventName.setError("Name is mandatory");
                 }
                 else {
-                    addEvent();
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    getActivity().startActivity(intent);
+                    int startTime = eventStartHour.getValue() * 100 + eventStartMinute.getValue();
+                    int endTime = eventEndHour.getValue() * 100 + eventEndMinute.getValue();
+                    TimeSlot eventTimeSlot = new TimeSlot(startTime, endTime);
+
+                    if(eventTimeSlot.startLessThanEndTime()) {
+                        addEvent(eventTimeSlot);
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        getActivity().startActivity(intent);
+                    } else {
+                        Toast.makeText(getActivity(), "start time needs to be sooner than end time", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -81,40 +90,42 @@ public class SingleEventFragment extends Fragment {
     private void initWidgets(View rootView) {
         eventName = rootView.findViewById(R.id.nameEventEditText);
         eventDate = rootView.findViewById(R.id.eventDateText);
-        eventHour = rootView.findViewById(R.id.eventTimeHour);
-        eventMinute = rootView.findViewById(R.id.eventTimeMin);
+        eventStartHour = rootView.findViewById(R.id.eventStartTimeHour);
+        eventStartMinute = rootView.findViewById(R.id.eventStartTimeMin);
+        eventEndHour = rootView.findViewById(R.id.eventEndTimeHour);
+        eventEndMinute = rootView.findViewById(R.id.eventEndTimeMin);
         addEventBtn = rootView.findViewById(R.id.addEventBtn);
         eventDetails = rootView.findViewById(R.id.detailsEventEditText);
-        eventDuration = rootView.findViewById(R.id.durationSlideBar);
         remindBefore = rootView.findViewById(R.id.remindBeforeSlideBar);
         firebaseFirestore = FirebaseFirestore.getInstance();
         eventDate.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));
-        eventHour.setMinValue(0);
-        eventHour.setMaxValue(23);
-        eventMinute.setMinValue(0);
-        eventMinute.setMaxValue(59);
+        eventStartHour.setMinValue(0);
+        eventStartHour.setMaxValue(23);
+        eventStartMinute.setMinValue(0);
+        eventStartMinute.setMaxValue(59);
+        eventEndHour.setMinValue(0);
+        eventEndHour.setMaxValue(23);
+        eventEndMinute.setMinValue(0);
+        eventEndMinute.setMaxValue(59);
+        eventStartHour.setValue(9);
+        eventEndHour.setValue(10);
     }
 
-    private void addEvent(){
+    private void addEvent(TimeSlot eventTimeSlot){
 
-        int eventDurationNo = (int) eventDuration.getValue();
         int remindBeforeNo = (int) remindBefore.getValue();
-        int hour = eventHour.getValue();
-        int minute = eventMinute.getValue();
-        int time;
-        time = hour * 100 + minute;
         String eventNameString = eventName.getText().toString();
         String eventDetailsString = eventDetails.getText().toString();
         String uniqueID = UUID.randomUUID().toString();
         String eventFormattedDate = CalendarUtils.formattedDate(CalendarUtils.selectedDate);
 
-        Event newEvent = new Event(eventNameString, eventDetailsString, eventFormattedDate, eventDurationNo, remindBeforeNo, time);
+        Event newEvent = new Event(uniqueID, eventNameString, eventDetailsString, eventFormattedDate, eventTimeSlot.getEndTime(), remindBeforeNo, eventTimeSlot.getStartTime());
         firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS).document(FirebaseAuth.getInstance().getUid())
                 .collection(Constants.KEY_COLLECTION_DATE).document(CalendarUtils.selectedDate.toString())
                 .collection(Constants.KEY_COLLECTION_EVENT).document(uniqueID).set(newEvent);
 
         createNotificationChannel(uniqueID);
-        setAlarm(hour, minute, CalendarUtils.selectedDate, remindBeforeNo);
+        setAlarm(eventTimeSlot.getStartHour(), eventTimeSlot.getStartMinute(), CalendarUtils.selectedDate, remindBeforeNo);
     }
 
     private void setAlarm(int hour, int minute, LocalDate selectedDate, int remindBeforeNo) {

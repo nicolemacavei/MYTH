@@ -124,7 +124,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         Task<QuerySnapshot> eventsList = firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS).document(userId)
                 .collection(Constants.KEY_COLLECTION_DATE).document(CalendarUtils.selectedDate.toString())
                 .collection(Constants.KEY_COLLECTION_EVENT)
-                .orderBy(Constants.KEY_TIME).get();
+                .orderBy(Constants.KEY_EVENT_STARTTIME).get();
 
         eventsList.addOnSuccessListener(task -> {
 
@@ -134,11 +134,11 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
                 String eventId = queryDocSn.getId();
                 String name = queryDocSn.getString(Constants.KEY_EVENT_NAME);
                 String details = queryDocSn.getString(Constants.KEY_EVENT_DETAILS);
-                int duration = queryDocSn.getLong(Constants.KEY_EVENT_DURATION).intValue();
+                int endTime = queryDocSn.getLong(Constants.KEY_EVENT_ENDTIME).intValue();
                 int remindBefore = queryDocSn.getLong(Constants.KEY_EVENT_REMIND).intValue();
-                int time = queryDocSn.getLong(Constants.KEY_TIME).intValue();
+                int startTime = queryDocSn.getLong(Constants.KEY_EVENT_STARTTIME).intValue();
 
-                Event event = new Event(name, details, dateFormatted, duration, remindBefore, time);
+                Event event = new Event(eventId, name, details, dateFormatted, endTime, remindBefore, startTime);
                 events.add(event);
             }
             if(events.size() > 0) {
@@ -175,9 +175,9 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     }
 
     private void removeEvent(int position) {
-        firebaseFirestore.collection("User").document(userId)
-                .collection("Date").document(CalendarUtils.selectedDate.toString())
-                .collection("Event").document(events.get(position).getEventId())
+        firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS).document(userId)
+                .collection(Constants.KEY_COLLECTION_DATE).document(CalendarUtils.selectedDate.toString())
+                .collection(Constants.KEY_COLLECTION_EVENT).document(events.get(position).getEventId())
                 .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

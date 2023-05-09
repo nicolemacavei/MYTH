@@ -78,7 +78,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 public void onClick(View v) {
                     FirebaseFirestore database = FirebaseFirestore.getInstance();
                     //delete request from DB
-                    database.collection(Constants.KEY_COLLECTION_USERS).document(currentUID)
+                    database.collection(Constants.KEY_COLLECTION_NOTIFICATION).document(currentUID)
                             .collection(Constants.KEY_COLLECTION_REQUEST).document(user.getUserId()).delete();
 
                     Toast.makeText(binding.getRoot().getContext(), "request rejected", Toast.LENGTH_SHORT).show();

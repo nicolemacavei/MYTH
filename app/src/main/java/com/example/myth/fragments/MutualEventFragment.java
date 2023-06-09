@@ -79,7 +79,6 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
             public void onClick(View v) {
                 //int duration = (int) eventDuration.getValue();
                 if(selectedUser != null) {
-                    //int daysAdded = 0;
                     LocalDate date = dateFound;
                     getHours(preferenceManager.getString(Constants.KEY_USER_ID), selectedUser.getUserId(), (int) eventDuration.getValue(), date);
                 } else {
@@ -158,11 +157,9 @@ public class MutualEventFragment extends Fragment implements ShowConnectionsFrag
                                 ArrayList<TimeSlot> availableHours = new ArrayList<>();
                                 availableHours = findAvailableHours(minDuration, busyHours);
 
-                                Log.e(TAG, "Available hours: " + availableHours.size() + " date is: " + date);
                                 if(availableHours.size() > 0) {
                                     showAvailableHours(availableHours, date);
                                 } else {
-                                    Log.e(TAG, "Busy hours: " + busyHours.size() + " date is: " + date);
                                     getHours(preferenceManager.getString(Constants.KEY_USER_ID), selectedUser.getUserId(), (int)eventDuration.getValue(), date.plusDays(1));
                                 }
                             }).addOnFailureListener(new OnFailureListener() {

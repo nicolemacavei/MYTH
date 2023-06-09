@@ -73,7 +73,7 @@ public class Event {
             hourString = hours + " hours";
         }
 
-        if (minutes == 0 && !hourString.isEmpty()) {
+        if ((minutes == 0 && !hourString.isEmpty()) || minutes == 60 ) {
             minuteString = "";
         } else if (minutes == 1) {
             minuteString = minutes + " minute";

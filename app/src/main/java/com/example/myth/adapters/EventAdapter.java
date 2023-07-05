@@ -10,16 +10,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myth.Event;
 import com.example.myth.databinding.ItemContainerEventBinding;
-import com.example.myth.utilities.PreferenceManager;
+import com.example.myth.interfaces.RecyclerViewInterface;
 
 import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder>{
 
     private final List<Event> events;
+    private final RecyclerViewInterface recyclerViewInterface;
 
-    public EventAdapter(@NonNull Context context, List<Event> events) {
+    public EventAdapter(@NonNull Context context, List<Event> events, RecyclerViewInterface recyclerViewInterface) {
         this.events = events;
+        this.recyclerViewInterface = recyclerViewInterface;
     }
 
     @NonNull
@@ -50,6 +52,19 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         EventViewHolder(ItemContainerEventBinding itemContainerEventBinding){
             super(itemContainerEventBinding.getRoot());
             binding = itemContainerEventBinding;
+
+            itemContainerEventBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(recyclerViewInterface != null){
+                        int eventPosition = getAdapterPosition();
+
+                        if(eventPosition != RecyclerView.NO_POSITION){
+                            recyclerViewInterface.onItemClick(eventPosition);
+                        }
+                    }
+                }
+            });
         }
 
         void setEventData(Event event){

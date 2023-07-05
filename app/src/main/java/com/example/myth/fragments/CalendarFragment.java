@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,9 +25,9 @@ import com.example.myth.R;
 import com.example.myth.activities.NewEventActivity;
 import com.example.myth.adapters.CalendarAdapter;
 import com.example.myth.adapters.EventAdapter;
+import com.example.myth.interfaces.RecyclerViewInterface;
 import com.example.myth.utilities.CalendarUtils;
 import com.example.myth.utilities.Constants;
-import com.example.myth.utilities.PreferenceManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -38,7 +39,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class CalendarFragment extends Fragment implements CalendarAdapter.OnItemListener{
+public class CalendarFragment extends Fragment implements CalendarAdapter.OnItemListener, RecyclerViewInterface {
 
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView, eventRecyclerView;
@@ -50,7 +51,6 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     private String userId = auth.getCurrentUser().getUid();
     private static ArrayList<Event> events = new ArrayList<>();
     EventAdapter eventAdapter;
-    private PreferenceManager preferenceManager;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -96,7 +96,6 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         nextMonthBtn = (Button) rootView.findViewById(R.id.nextMonthBtn);
         addEventBtn = (FloatingActionButton) rootView.findViewById(R.id.addItemCalendarBtn);
         eventRecyclerView = rootView.findViewById(R.id.eventRecyclerView);
-        preferenceManager = new PreferenceManager(getContext());
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(eventRecyclerView);
     }
@@ -142,7 +141,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
                 events.add(event);
             }
             if(events.size() > 0) {
-                eventAdapter = new EventAdapter(getActivity(), events);
+                eventAdapter = new EventAdapter(getActivity(), events, this);
                 eventRecyclerView.setAdapter(eventAdapter);
                 eventRecyclerView.setVisibility(View.VISIBLE);
             } else
@@ -166,6 +165,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         }
     };
 
+    //onItemClick for calendar date
     @Override
     public void onItemClick(int position, LocalDate date) {
         if(date != null) {
@@ -183,8 +183,9 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             events.remove(events.get(position));
-                            EventAdapter eventAdapter = new EventAdapter(getActivity(), events);
+                            EventAdapter eventAdapter = new EventAdapter(getActivity(), events, null);
                             eventRecyclerView.setAdapter(eventAdapter);
+                            Toast.makeText(getActivity(), "Event deleted", Toast.LENGTH_SHORT).show();
                         }
                         else {
                             Toast.makeText(getActivity(), "Error " + task.getException(), Toast.LENGTH_SHORT).show();
@@ -192,5 +193,22 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
                     }
                 });
 
+    }
+
+    //onItemClick for Event
+    @Override
+    public void onItemClick(int position) {
+        Bundle args = new Bundle();
+        args.putString("eventId", events.get(position).getEventId());
+        args.putString("eventName", events.get(position).getName());
+        args.putString("eventDate", events.get(position).getDate());
+        args.putString("eventDetails", events.get(position).getDetails());
+        args.putInt("eventEndTime", events.get(position).getEndTime());
+        args.putInt("eventStartTime", events.get(position).getStartTime());
+        final FragmentManager fragmentManager = getFragmentManager();
+        final ShowEventFragment eventFragment = new ShowEventFragment();
+        eventFragment.setArguments(args);
+        eventFragment.setTargetFragment(CalendarFragment.this, 1);
+        eventFragment.show(fragmentManager, "TV_tag");
     }
 }

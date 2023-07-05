@@ -68,15 +68,6 @@
                     android:textColor="@color/iconColors"
                     android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/cityUserProfile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:fontFamily="sans-serif-light"
-                    android:text="@string/enter_your_hometown"
-                    android:textColor="@color/iconColors"
-                    android:textSize="15sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -101,14 +92,14 @@
                 android:textColor="@color/iconColors"
                 android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/scanQRUserProfile"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:fontFamily="sans-serif-light"
-                android:text="@string/scan_qr_code"
-                android:textColor="@color/iconColors"
-                android:textSize="20sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/scanQRUserProfile"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:fontFamily="sans-serif-light"-->
+<!--                android:text="@string/scan_qr_code"-->
+<!--                android:textColor="@color/iconColors"-->
+<!--                android:textSize="20sp" />-->
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/changePasswordBtn"
@@ -116,7 +107,8 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:text="@string/change_password"
-                android:textColor="@color/midnightblue" />
+                android:textColor="@color/midnightblue"
+                android:paddingTop="30dp"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/logoutBtn"

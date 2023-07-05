@@ -89,25 +89,6 @@
 
             </LinearLayout>
 
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginEnd="20dp"-->
-<!--                android:hint="Duration"-->
-<!--                android:textSize="20sp"-->
-<!--                android:paddingStart="20dp"-->
-<!--                android:paddingEnd="0dp"-->
-<!--                android:textColor="@color/midnightblue"/>-->
-<!--            <com.google.android.material.slider.Slider-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:paddingStart="20dp"-->
-<!--                android:id="@+id/durationSlideBar"-->
-<!--                android:valueFrom="10"-->
-<!--                android:valueTo="120"-->
-<!--                android:value="30"-->
-<!--                android:stepSize="10.0"/>-->
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -124,6 +105,7 @@
                 android:valueFrom="0"
                 android:valueTo="60"
                 android:value="10"
+                android:layout_marginEnd="20dp"
                 android:stepSize="10.0"/>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -162,9 +144,7 @@
                 android:id="@+id/addEventBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
                 android:layout_marginBottom="20dp"
                 android:text="@string/add_event_btn"/>
 

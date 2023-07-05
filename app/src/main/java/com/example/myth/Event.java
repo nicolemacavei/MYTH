@@ -112,4 +112,20 @@ public class Event {
                 + " - "
                 + endTime / 100 + ":" + endTimeString;
     }
+
+    public int getStartHour(){
+        return this.startTime / 100;
+    }
+
+    public int getStartMinute(){
+        return this.startTime % 100;
+    }
+
+    public int getEndMinute(){
+        return this.endTime % 100;
+    }
+
+    public int getEndHour(){
+        return this.endTime / 100;
+    }
 }

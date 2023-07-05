@@ -82,7 +82,7 @@ public class TodaysEventsFragment extends Fragment {
                 events.add(event);
             }
             if(events.size() > 0) {
-                EventAdapter eventAdapter = new EventAdapter(getActivity(), events);
+                EventAdapter eventAdapter = new EventAdapter(getActivity(), events, null);
                 eventsRecyclerView.setAdapter(eventAdapter);
                 eventsRecyclerView.setVisibility(View.VISIBLE);
             } else

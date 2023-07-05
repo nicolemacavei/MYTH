@@ -187,34 +187,34 @@ public class SingleEventFragment extends Fragment {
                 .collection(Constants.KEY_COLLECTION_DATE).document(CalendarUtils.selectedDate.toString())
                 .collection(Constants.KEY_COLLECTION_EVENT).document(uniqueID).set(newEvent);
 
-        if(!repeatSelected.equals(onceString)){
+        if(repeatSelected != null) {
+            if (!repeatSelected.equals(onceString)) {
 
-            int days;
-            if(repeatSelected.equals(dailyString)){
-                days = 1;
-            } else if (repeatSelected.equals(weeklyString)) {
-                days = 7;
-            } else {
-                days = 31;
-            }
-
-            if(days == 31){
-                CalendarUtils.selectedDate = CalendarUtils.selectedDate.plusMonths(1);
-            }
-            else {
-                CalendarUtils.selectedDate = CalendarUtils.selectedDate.plusDays(days);
-            }
-
-            while( CalendarUtils.selectedDate.isBefore(selectedEndDate) || CalendarUtils.selectedDate.equals(selectedEndDate)){
-
-                firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS).document(FirebaseAuth.getInstance().getUid())
-                        .collection(Constants.KEY_COLLECTION_DATE).document(CalendarUtils.selectedDate.toString())
-                        .collection(Constants.KEY_COLLECTION_EVENT).document(uniqueID).set(newEvent);
-                if(days == 31){
-                    CalendarUtils.selectedDate = CalendarUtils.selectedDate.plusMonths(1);
+                int days;
+                if (repeatSelected.equals(dailyString)) {
+                    days = 1;
+                } else if (repeatSelected.equals(weeklyString)) {
+                    days = 7;
+                } else {
+                    days = 31;
                 }
-                else {
+
+                if (days == 31) {
+                    CalendarUtils.selectedDate = CalendarUtils.selectedDate.plusMonths(1);
+                } else {
                     CalendarUtils.selectedDate = CalendarUtils.selectedDate.plusDays(days);
+                }
+
+                while (CalendarUtils.selectedDate.isBefore(selectedEndDate) || CalendarUtils.selectedDate.equals(selectedEndDate)) {
+
+                    firebaseFirestore.collection(Constants.KEY_COLLECTION_USERS).document(FirebaseAuth.getInstance().getUid())
+                            .collection(Constants.KEY_COLLECTION_DATE).document(CalendarUtils.selectedDate.toString())
+                            .collection(Constants.KEY_COLLECTION_EVENT).document(uniqueID).set(newEvent);
+                    if (days == 31) {
+                        CalendarUtils.selectedDate = CalendarUtils.selectedDate.plusMonths(1);
+                    } else {
+                        CalendarUtils.selectedDate = CalendarUtils.selectedDate.plusDays(days);
+                    }
                 }
             }
         }
